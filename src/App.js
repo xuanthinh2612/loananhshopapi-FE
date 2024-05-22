@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { DefaultLayout } from "./Layout";
+import routes from "./routes";
+import { isUserLoggedIn } from "./service/authService";
+import configs from "./configs";
 
 function App() {
+  function AuthenticatedRoute({ route, children }) {
+    const isAuth = isUserLoggedIn();
+
+    if (route.notRequireAuth || isAuth) {
+      return children;
+    }
+
+    return <Navigate to={configs.routes.login} />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {routes.map((route, index) => {
+          const Page = route.element;
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <DefaultLayout>
+                  <AuthenticatedRoute route={route}>
+                    <Page />
+                  </AuthenticatedRoute>
+                </DefaultLayout>
+              }
+            ></Route>
+          );
+        })}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
