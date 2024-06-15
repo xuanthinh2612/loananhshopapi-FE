@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
-import AdminSidebar from "./AdminSidebar";
 import configs from "../../configs";
+import AdminLayout from "layouts/adminLayout";
 
 function Dashboard() {
   return (
-    <>
+    <AdminLayout>
       <div className="container-fluid px-4">
         <h1 className="mt-4">Trang Quản Lý</h1>
-        <AdminSidebar />
         <ol className="breadcrumb mb-4">
           <li className="breadcrumb-item">Quản lý chung</li>
           <li className="breadcrumb-item active">Quản lý chung</li>
@@ -110,7 +108,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </>
+    </AdminLayout>
   );
 }
 
