@@ -20,15 +20,21 @@ import PropTypes from "prop-types";
 
 // react-chartjs-2 components
 import { Bubble } from "react-chartjs-2";
-import { Chart as ChartJS, LinearScale, PointElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
 // @mui material components
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from "components/shared/MDBox";
+import MDTypography from "components/shared/MDTypography";
 
 // BubbleChart configurations
 import configs from "examples/Charts/BubbleChart/configs";

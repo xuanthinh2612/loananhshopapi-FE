@@ -19,27 +19,29 @@ import { forwardRef } from "react";
 import PropTypes from "prop-types";
 
 // Material Dashboard 2 React components
-import MDTypography from "components/MDTypography";
+import MDTypography from "components/shared/MDTypography";
 
 // Custom styles for MDProgress
-import MDProgressRoot from "components/MDProgress/MDProgressRoot";
+import MDProgressRoot from "components/shared/MDProgress/MDProgressRoot";
 
-const MDProgress = forwardRef(({ variant, color, value, label, ...rest }, ref) => (
-  <>
-    {label && (
-      <MDTypography variant="button" fontWeight="medium" color="text">
-        {value}%
-      </MDTypography>
-    )}
-    <MDProgressRoot
-      {...rest}
-      ref={ref}
-      variant="determinate"
-      value={value}
-      ownerState={{ color, value, variant }}
-    />
-  </>
-));
+const MDProgress = forwardRef(
+  ({ variant, color, value, label, ...rest }, ref) => (
+    <>
+      {label && (
+        <MDTypography variant="button" fontWeight="medium" color="text">
+          {value}%
+        </MDTypography>
+      )}
+      <MDProgressRoot
+        {...rest}
+        ref={ref}
+        variant="determinate"
+        value={value}
+        ownerState={{ color, value, variant }}
+      />
+    </>
+  )
+);
 
 // Setting default values for the props of MDProgress
 MDProgress.defaultProps = {

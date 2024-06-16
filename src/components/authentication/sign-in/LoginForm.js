@@ -16,11 +16,11 @@ import "firebaseui/dist/firebaseui.css"; // Import FirebaseUI CSS
 import Card from "@mui/material/Card";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
-import MDSnackbar from "components/MDSnackbar";
+import MDBox from "components/shared/MDBox";
+import MDTypography from "components/shared/MDTypography";
+import MDInput from "components/shared/MDInput";
+import MDButton from "components/shared/MDButton";
+import MDSnackbar from "components/shared/MDSnackbar";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";

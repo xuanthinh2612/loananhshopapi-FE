@@ -19,7 +19,7 @@ import sidenavRoutes from "sidenavRoutes";
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
-import MDBox from "components/MDBox";
+import MDBox from "components/shared/MDBox";
 import { Icon } from "@mui/material";
 import { useState } from "react";
 

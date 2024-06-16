@@ -3,10 +3,10 @@ import Navbar from "./components/Navbar";
 // import { isAdminUser } from "service/authService";
 
 import DefaultNavbar from "layouts/defaultLayout/components/DefaultNavbar";
-import MDBox from "components/MDBox";
+import MDBox from "components/shared/MDBox";
 import DashboardLayout from "./components/DashboardLayout";
 import Header from "./components/Header";
-import Footer from "examples/Footer";
+import Footer from "./components/Footer";
 
 function DefaultLayout({ children }) {
   // const isAdmin = isAdminUser();

@@ -39,8 +39,8 @@ import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from "components/shared/MDBox";
+import MDTypography from "components/shared/MDTypography";
 
 // Material Dashboard 2 React helper functions
 import gradientChartLine from "assets/theme/functions/gradientChartLine";
@@ -105,7 +105,9 @@ function MixedChart({ icon, title, description, height, chart }) {
             maxBarThickness: 6,
             backgroundColor: gradientChartLine(
               chartElement.ctx,
-              colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main
+              colors[dataset.color]
+                ? colors[dataset.color || "dark"].main
+                : colors.dark.main
             ),
           };
 

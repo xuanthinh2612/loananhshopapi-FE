@@ -24,9 +24,9 @@ import Card from "@mui/material/Card";
 import MuiLink from "@mui/material/Link";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
+import MDBox from "components/shared/MDBox";
+import MDTypography from "components/shared/MDTypography";
+import MDButton from "components/shared/MDButton";
 
 function SimpleBlogCard({ image, title, description, action }) {
   return (
@@ -60,7 +60,12 @@ function SimpleBlogCard({ image, title, description, action }) {
         />
       </MDBox>
       <MDBox p={3}>
-        <MDTypography display="inline" variant="h3" textTransform="capitalize" fontWeight="bold">
+        <MDTypography
+          display="inline"
+          variant="h3"
+          textTransform="capitalize"
+          fontWeight="bold"
+        >
           {title}
         </MDTypography>
         <MDBox mt={2} mb={3}>
@@ -70,11 +75,15 @@ function SimpleBlogCard({ image, title, description, action }) {
         </MDBox>
         {action.type === "external" ? (
           <MuiLink href={action.route} target="_blank" rel="noreferrer">
-            <MDButton color={action.color ? action.color : "dark"}>{action.label}</MDButton>
+            <MDButton color={action.color ? action.color : "dark"}>
+              {action.label}
+            </MDButton>
           </MuiLink>
         ) : (
           <Link to={action.route}>
-            <MDButton color={action.color ? action.color : "dark"}>{action.label}</MDButton>
+            <MDButton color={action.color ? action.color : "dark"}>
+              {action.label}
+            </MDButton>
           </Link>
         )}
       </MDBox>

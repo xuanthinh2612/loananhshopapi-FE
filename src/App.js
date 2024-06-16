@@ -15,7 +15,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+import MDBox from "components/shared/MDBox";
 
 // Material Dashboard 2 React themes
 import theme from "assets/theme";

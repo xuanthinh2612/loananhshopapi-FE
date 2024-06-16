@@ -19,7 +19,7 @@ import { forwardRef } from "react";
 import PropTypes from "prop-types";
 
 // Custom styles for MDBox
-import MDBoxRoot from "components/MDBox/MDBoxRoot";
+import MDBoxRoot from "components/shared/MDBox/MDBoxRoot";
 
 const MDBox = forwardRef(
   (

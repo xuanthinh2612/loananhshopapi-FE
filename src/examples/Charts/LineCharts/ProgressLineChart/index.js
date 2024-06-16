@@ -37,9 +37,9 @@ import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDProgress from "components/MDProgress";
+import MDBox from "components/shared/MDBox";
+import MDTypography from "components/shared/MDTypography";
+import MDProgress from "components/shared/MDProgress";
 
 // ProgressLineChart configurations
 import configs from "examples/Charts/LineCharts/ProgressLineChart/config";
@@ -55,8 +55,21 @@ ChartJS.register(
   Filler
 );
 
-function ProgressLineChart({ color, icon, title, count, progress, height, chart }) {
-  const { data, options } = configs(color, chart.labels || [], title, chart.data || []);
+function ProgressLineChart({
+  color,
+  icon,
+  title,
+  count,
+  progress,
+  height,
+  chart,
+}) {
+  const { data, options } = configs(
+    color,
+    chart.labels || [],
+    title,
+    chart.data || []
+  );
 
   return (
     <Card>
@@ -91,7 +104,12 @@ function ProgressLineChart({ color, icon, title, count, progress, height, chart 
           ) : null}
         </MDBox>
         <MDBox width="25%" ml="auto">
-          <MDTypography display="block" variant="caption" fontWeight="medium" color="text">
+          <MDTypography
+            display="block"
+            variant="caption"
+            fontWeight="medium"
+            color="text"
+          >
             {progress}%
           </MDTypography>
           <MDBox mt={0.25}>
@@ -120,7 +138,15 @@ ProgressLineChart.defaultProps = {
 
 // Typechecking props for the ProgressLineChart
 ProgressLineChart.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+  color: PropTypes.oneOf([
+    "primary",
+    "secondary",
+    "info",
+    "success",
+    "warning",
+    "error",
+    "dark",
+  ]),
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

@@ -19,10 +19,10 @@ import { forwardRef, createContext, useContext, useMemo } from "react";
 import PropTypes from "prop-types";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+import MDBox from "components/shared/MDBox";
 
 // Custom styles for MDPagination
-import MDPaginationItemRoot from "components/MDPagination/MDPaginationItemRoot";
+import MDPaginationItemRoot from "components/shared/MDPagination/MDPaginationItemRoot";
 
 // The Pagination main context
 const Context = createContext();
@@ -32,7 +32,10 @@ const MDPagination = forwardRef(
     const context = useContext(Context);
     const paginationSize = context ? context.size : null;
 
-    const value = useMemo(() => ({ variant, color, size }), [variant, color, size]);
+    const value = useMemo(
+      () => ({ variant, color, size }),
+      [variant, color, size]
+    );
 
     return (
       <Context.Provider value={value}>

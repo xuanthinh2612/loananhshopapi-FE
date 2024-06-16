@@ -20,8 +20,8 @@ import PropTypes from "prop-types";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from "components/shared/MDBox";
+import MDTypography from "components/shared/MDTypography";
 
 // Timeline context
 import { useTimeline } from "examples/Timeline/context";
@@ -33,7 +33,11 @@ function TimelineItem({ color, icon, title, dateTime, description, lastItem }) {
   const isDark = useTimeline();
 
   return (
-    <MDBox position="relative" mb={3} sx={(theme) => timelineItem(theme, { lastItem, isDark })}>
+    <MDBox
+      position="relative"
+      mb={3}
+      sx={(theme) => timelineItem(theme, { lastItem, isDark })}
+    >
       <MDBox
         display="flex"
         justifyContent="center"
@@ -51,8 +55,17 @@ function TimelineItem({ color, icon, title, dateTime, description, lastItem }) {
       >
         <Icon fontSize="inherit">{icon}</Icon>
       </MDBox>
-      <MDBox ml={5.75} pt={description ? 0.7 : 0.5} lineHeight={0} maxWidth="30rem">
-        <MDTypography variant="button" fontWeight="medium" color={isDark ? "white" : "dark"}>
+      <MDBox
+        ml={5.75}
+        pt={description ? 0.7 : 0.5}
+        lineHeight={0}
+        maxWidth="30rem"
+      >
+        <MDTypography
+          variant="button"
+          fontWeight="medium"
+          color={isDark ? "white" : "dark"}
+        >
           {title}
         </MDTypography>
         <MDBox mt={0.5}>
