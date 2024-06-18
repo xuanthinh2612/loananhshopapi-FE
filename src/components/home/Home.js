@@ -27,87 +27,94 @@ import DefaultProjectCard from "components/shared/DefaultProductCard";
 import DefaultLayout from "layouts/defaultLayout";
 
 // use for reducer
-import { getListProductAction } from "actions/productAction";
+import { getListProductAction } from "actions/productActions";
 import store from "store";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 
 // use helper
 import { formatter } from "utils/helper";
+import configs from "configs";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 function Home(props) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     store.dispatch(getListProductAction());
   }, []);
 
   return (
     <DefaultLayout>
-      <MDBox pt={2} px={2} lineHeight={1.25}>
-        <MDTypography variant="h6" fontWeight="medium">
-          Mỹ Phẩm
-        </MDTypography>
-        <MDBox mb={1}>
-          <MDTypography variant="button" color="text">
-            Architects design houses
+      <Header>
+        <MDBox pt={2} px={2} lineHeight={1.25}>
+          <MDTypography variant="h6" fontWeight="medium">
+            Mỹ Phẩm
           </MDTypography>
+          <MDBox mb={1}>
+            <MDTypography variant="button" color="text">
+              Architects design houses
+            </MDTypography>
+          </MDBox>
         </MDBox>
-      </MDBox>
-      <MDBox mt={2} p={2}>
-        <Grid container spacing={6}>
-          {props.listProduct &&
-            props.listProduct.map((product) => {
-              return (
-                <Grid item xs={6} md={6} xl={3}>
-                  <DefaultProjectCard
-                    image={product.avatar.imageUrl}
-                    label={formatter.format(product.currentPrice)}
-                    title={product.name}
-                    description={product.description}
-                    action={{
-                      type: "internal",
-                      route: `/api/product/show/${product.id}`,
-                      color: "info",
-                      label: "Xem Chi Tiết",
-                    }}
-                  />
-                </Grid>
-              );
-            })}
-        </Grid>
-      </MDBox>
-      <MDBox pt={2} px={2} lineHeight={1.25}>
-        <MDTypography variant="h6" fontWeight="medium">
-          Thực phẩm chức năng
-        </MDTypography>
-        <MDBox mb={1}>
-          <MDTypography variant="button" color="text">
-            Architects design houses
+        <MDBox mt={2} p={2}>
+          <Grid container spacing={6}>
+            {props.listProduct &&
+              props.listProduct.map((product) => {
+                return (
+                  <Grid item xs={6} md={6} xl={3}>
+                    <DefaultProjectCard
+                      image={product.avatar.imageUrl}
+                      label={formatter.format(product.currentPrice)}
+                      title={product.name}
+                      description={product.description}
+                      action={{
+                        type: "internal",
+                        route: `/product-detail/${product.id}`,
+                        color: "info",
+                        label: "Xem Chi Tiết",
+                      }}
+                    />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </MDBox>
+        <MDBox pt={2} px={2} lineHeight={1.25}>
+          <MDTypography variant="h6" fontWeight="medium">
+            Thực phẩm chức năng
           </MDTypography>
+          <MDBox mb={1}>
+            <MDTypography variant="button" color="text">
+              Architects design houses
+            </MDTypography>
+          </MDBox>
         </MDBox>
-      </MDBox>
-      <MDBox mt={2} p={2}>
-        <Grid container spacing={6}>
-          {props.listProduct &&
-            props.listProduct.map((product) => {
-              return (
-                <Grid item xs={6} md={6} xl={3}>
-                  <DefaultProjectCard
-                    image={product.avatar.imageUrl}
-                    label={formatter.format(product.currentPrice)}
-                    title={product.name}
-                    description={product.description}
-                    action={{
-                      type: "internal",
-                      route: `/api/product/show/${product.id}`,
-                      color: "info",
-                      label: "Xem Chi Tiết",
-                    }}
-                  />
-                </Grid>
-              );
-            })}
-        </Grid>
-      </MDBox>
+        <MDBox mt={2} p={2}>
+          <Grid container spacing={6}>
+            {props.listProduct &&
+              props.listProduct.map((product) => {
+                return (
+                  <Grid item xs={6} md={6} xl={3}>
+                    <DefaultProjectCard
+                      image={product.avatar.imageUrl}
+                      label={formatter.format(product.currentPrice)}
+                      title={product.name}
+                      description={product.description}
+                      action={{
+                        type: "internal",
+                        route: `/api/product/show/${product.id}`,
+                        color: "info",
+                        label: "Xem Chi Tiết",
+                      }}
+                    />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </MDBox>
+      </Header>
     </DefaultLayout>
   );
 }

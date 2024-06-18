@@ -1,20 +1,27 @@
-import configs from "../configs";
-import StudentList from "../components/StudentList";
-import Home from "../components/home";
-import ClassList from "../components/ClassList";
-import StudentEditForm from "../components/StudentEditFrom";
-import StudentDetail from "../components/StudentDetail";
-import NewStudentForm from "../components/NewStudentFrom";
-import NewClassForm from "../components/NewClassForm";
-import EditClassForm from "../components/EditClassForm";
-import ClassDetailForm from "../components/ClassDetailForm";
-import LoginForm from "../components/authentication/sign-in";
-import RegistrationForm from "../components/authentication/sign-up/RegistrationForm";
-import Dashboard from "../components/admin/Dashboard";
-import ProductListMng from "../components/admin/ProductListMng";
-import ProductNew from "../components/admin/ProductNew";
+import configs from "configs";
+import StudentList from "components/StudentList";
+import Home from "components/home";
+import ClassList from "components/ClassList";
+import StudentEditForm from "components/StudentEditFrom";
+import StudentDetail from "components/StudentDetail";
+import NewStudentForm from "components/NewStudentFrom";
+import NewClassForm from "components/NewClassForm";
+import EditClassForm from "components/EditClassForm";
+import ClassDetailForm from "components/ClassDetailForm";
+import LoginForm from "components/authentication/sign-in";
+import RegistrationForm from "components/authentication/sign-up/RegistrationForm";
+import Dashboard from "components/admin/Dashboard";
+import ProductListMng from "components/admin/ProductListMng";
+import ProductNew from "components/admin/ProductNew";
+
+import ProductDetail from "components/productDetail";
 
 const routes = [
+  {
+    path: configs.routes.productDetail,
+    element: ProductDetail,
+    notRequireAuth: true,
+  },
   { path: configs.routes.productNew, element: ProductNew },
   { path: configs.routes.productListMng, element: ProductListMng },
   { path: configs.routes.adminDashboard, element: Dashboard },

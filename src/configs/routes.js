@@ -4,7 +4,7 @@ const routes = {
   studentList: "/students",
   classList: "/classes",
   classDetail: "/class-detail/:id",
-  studentDetail: "/student-detail/:id",
+  productDetail: "/product-detail/:id",
   newStudent: "/new-student",
   newClass: "/new-class",
   editStudent: "/edit-student/:id",
