@@ -13,6 +13,8 @@ const routes = {
   registration: "/registration",
   productListMng: "/productListMng",
   productNew: "/productNew",
+  order: "/order",
+  aboutUs: "/about",
 };
 
 export default routes;

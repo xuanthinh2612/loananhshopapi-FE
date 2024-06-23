@@ -37,6 +37,9 @@ import { formatter } from "utils/helper";
 import configs from "configs";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
+import { Card, Typography, CardMedia } from "@mui/material";
+import TruncatedTypography from "components/shared/TruncatedTypography";
+import MultiLineEllipsis from "components/shared/MultiLineEllipsis";
 
 function Home(props) {
   const navigate = useNavigate();
@@ -87,7 +90,7 @@ function Home(props) {
           </MDTypography>
           <MDBox mb={1}>
             <MDTypography variant="button" color="text">
-              Architects design houses
+              Hàng chính hãng từ những thương hiệu hàng đầu
             </MDTypography>
           </MDBox>
         </MDBox>
@@ -104,7 +107,7 @@ function Home(props) {
                       description={product.description}
                       action={{
                         type: "internal",
-                        route: `/api/product/show/${product.id}`,
+                        route: `/product-detail/${product.id}`,
                         color: "info",
                         label: "Xem Chi Tiết",
                       }}
@@ -114,6 +117,62 @@ function Home(props) {
               })}
           </Grid>
         </MDBox>
+        <Grid container spacing={4} mt={5}>
+          <Grid item xs={12}>
+            <Typography variant="h3" mb={3}>
+              Sản phẩm tương tự
+            </Typography>
+            <Grid container spacing={3}>
+              {store.getState().productReducer.list.map((product, index) => (
+                <Grid item xs={6} sm={6} md={3} key={index}>
+                  <Link
+                    to={`/product-detail/${product.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
+                      <CardMedia
+                        sx={{ p: 0, m: 0, borderRadius: 0 }}
+                        component="img"
+                        image={product.avatar.imageUrl}
+                        alt={product.name}
+                      />
+                      <MDBox mt={1} mx={2}>
+                        <MDTypography
+                          variant="button"
+                          fontWeight="regular"
+                          color="text"
+                          textTransform="capitalize"
+                        >
+                          {product.currentPrice}
+                        </MDTypography>
+                        <MDBox mb={1}>
+                          <TruncatedTypography
+                            component={Link}
+                            // to={"asdasd"}
+                            variant="h5"
+                            textTransform="capitalize"
+                          >
+                            {product.name}
+                          </TruncatedTypography>
+                        </MDBox>
+                        <MDBox mb={3} lineHeight={0}>
+                          <MultiLineEllipsis
+                            variant="button"
+                            fontWeight="light"
+                            color="text"
+                          >
+                            {product.description}
+                          </MultiLineEllipsis>
+                        </MDBox>
+                      </MDBox>
+                    </Card>
+                  </Link>
+                  {/* <MDBox display="flex">{renderAuthors}</MDBox> */}
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
       </Header>
     </DefaultLayout>
   );

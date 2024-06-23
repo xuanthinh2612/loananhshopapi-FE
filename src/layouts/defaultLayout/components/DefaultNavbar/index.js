@@ -169,7 +169,7 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
             </NavLink>
             <NavLink to={configs.routes.home}>
               <IconButton sx={navbarIconButton} size="small" disableRipple>
-                Trang chủ
+                LoanAnh Shop
               </IconButton>
             </NavLink>
             <NavLink to={configs.routes.login}>
@@ -177,7 +177,7 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                 Blog
               </IconButton>
             </NavLink>
-            <NavLink to={configs.routes.login}>
+            <NavLink to={configs.routes.aboutUs}>
               <IconButton sx={navbarIconButton} size="small" disableRipple>
                 Giới thiệu
               </IconButton>

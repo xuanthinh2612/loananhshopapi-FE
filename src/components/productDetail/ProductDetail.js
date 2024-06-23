@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProductAction } from "actions/productActions";
@@ -14,6 +14,7 @@ import {
   CardMedia,
   CardContent,
   Box,
+  TextField,
 } from "@mui/material";
 import DefaultLayout from "layouts/defaultLayout";
 // Material Dashboard 2 React components
@@ -22,8 +23,18 @@ import MDTypography from "components/shared/MDTypography";
 import MDInput from "components/shared/MDInput";
 import MDButton from "components/shared/MDButton";
 import MDSnackbar from "components/shared/MDSnackbar";
+import Icon from "@mui/material/Icon";
+import DefaultProjectCard from "components/shared/DefaultProductCard";
+import { formatter } from "utils/helper";
+import MDBoxRoot from "components/shared/MDBox/MDBoxRoot";
+import TruncatedTypography from "components/shared/TruncatedTypography";
+import MultiLineEllipsis from "components/shared/MultiLineEllipsis";
+import Tooltip from "@mui/material/Tooltip";
+import MDAvatar from "components/shared/MDAvatar";
+import SpinnerIcon from "components/SpinnerIcon";
 
 function ProductDetail(props) {
+  const navigate = useNavigate();
   const { id } = useParams();
   const isAdmin = isAdminUser();
 
@@ -31,30 +42,58 @@ function ProductDetail(props) {
     store.dispatch(getProductAction(id));
   }, [id]);
 
-  if (props.error) {
-    return (
-      <Container>
-        Opp! Some error Occured with status: {props.error.response.status} -{" "}
-        {props.error.message}
-      </Container>
-    );
-  }
+  const handleClickBuyNow = (e) => {
+    navigate("/order");
+  };
 
-  if (props.isLoading) {
-    return (
-      <Container>
-        <div className="text-center">Loading...</div>
-      </Container>
-    );
-  }
+  // const renderAuthors = ({ image: media, name }) => (
+  //   <Tooltip key={name} title={name} placement="bottom">
+  //     <MDAvatar
+  //       src={media}
+  //       alt={name}
+  //       size="xs"
+  //       sx={({ borders: { borderWidth }, palette: { white } }) => ({
+  //         border: `${borderWidth[2]} solid ${white.main}`,
+  //         cursor: "pointer",
+  //         position: "relative",
+  //         ml: -1.25,
+
+  //         "&:hover, &:focus": {
+  //           zIndex: "10",
+  //         },
+  //       })}
+  //     />
+  //   </Tooltip>
+  // );
 
   const product = props.product;
 
+  if (props.isLoading) {
+    return (
+      <DefaultLayout>
+        <Container sx={{ textAlign: "center", pt: 1 }}>
+          {SpinnerIcon}&nbsp;&nbsp;&nbsp;Đang tải dữ liệu...
+        </Container>
+      </DefaultLayout>
+    );
+  }
+
+  if (props.error) {
+    return (
+      <DefaultLayout>
+        <Container sx={{ textAlign: "center", pt: 1 }}>
+          <Typography variant="h2">Ôi! Đã có lỗi xảy ra!</Typography>
+          <Typography variant="subtitle1">xin vui lòng thử lại sau.</Typography>
+        </Container>
+      </DefaultLayout>
+    );
+  }
+
   return (
     <DefaultLayout>
-      {product && (
+      {product.id && (
         <>
-          <Grid container spacing={4} alignItems="center">
+          <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
               <Card p={0} m={0}>
                 <CardMedia
@@ -78,14 +117,43 @@ function ProductDetail(props) {
                   Danh Mục: {product.category.name}
                 </Typography>
                 <Typography variant="body1">{product.description}</Typography>
-                <MDBox mt={3} mb={1}>
+                <MDBox mt={3} mb={2}>
+                  <Typography variant="h6" sx={{ mr: 2 }}>
+                    Số Lượng:
+                  </Typography>
+                  <TextField
+                    type="number"
+                    defaultValue={1}
+                    InputProps={{ inputProps: { min: 1 } }}
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: "100px" }}
+                  />
+                </MDBox>
+                <MDBox
+                  mb={1}
+                  mt={3}
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <MDButton
+                    fullWidth
+                    sx={{ mr: 1 }}
+                    variant="gradient"
+                    color="success"
+                    onClick={(e) => handleClickBuyNow(e)}
+                  >
+                    &nbsp;Mua Ngay
+                  </MDButton>
                   <MDButton
                     variant="gradient"
-                    color="info"
                     fullWidth
+                    sx={{ ml: 1 }}
+                    color="warning"
                     // onClick={(e) => handleLoginForm(e)}
                   >
-                    &nbsp;Mua Hàng
+                    Thêm vào giỏ hàng&nbsp;&nbsp;
+                    {<Icon>shopping_cart</Icon>}
                   </MDButton>
                 </MDBox>
               </Box>
@@ -96,7 +164,13 @@ function ProductDetail(props) {
               <Typography variant="h3">Mô tả chi tiết</Typography>
               <Card>
                 {product.subContentList.map((subContent, index) => (
-                  <Grid key={index} p={2} mb={5} container>
+                  <Grid
+                    key={index}
+                    p={2}
+                    mb={0}
+                    container
+                    justifyContent="center"
+                  >
                     <Grid item xs={12} md={6}>
                       <Card>
                         <CardMedia
@@ -106,6 +180,11 @@ function ProductDetail(props) {
                           alt={product.name}
                         />
                       </Card>
+                      <CardContent sx={{ textAlign: "center", pt: 1 }}>
+                        <Typography variant="caption">
+                          {subContent.title}
+                        </Typography>
+                      </CardContent>
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Box display="flex" alignItems="center" height="100%">
@@ -115,6 +194,18 @@ function ProductDetail(props) {
                             sx={{ textAlign: "justify" }}
                           >
                             {subContent.content1}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ textAlign: "justify" }}
+                          >
+                            {subContent.content2}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ textAlign: "justify" }}
+                          >
+                            {subContent.content3}
                           </Typography>
                         </CardContent>
                       </Box>
@@ -126,37 +217,62 @@ function ProductDetail(props) {
           </Grid>
         </>
       )}
-      {/* <Grid container spacing={4} mt={5}>
+      <Grid container spacing={4} mt={5}>
         <Grid item xs={12}>
-          <Typography variant="h3">Similar Products</Typography>
-          <Grid container spacing={2}>
-            {console.log(store.getState())}
-            {store
-              .getState()
-              .productReducer.list.map((similarProduct, index) => (
-                <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
-                  <Link
-                    to={`/product/${similarProduct.id}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Card>
-                      <CardMedia
-                        component="img"
-                        image={similarProduct.avatar.imageUrl}
-                        alt={similarProduct.name}
-                      />
-                      <CardContent>
-                        <Typography variant="body1">
-                          {similarProduct.name}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </Grid>
-              ))}
+          <Typography variant="h3" mb={3}>
+            Sản phẩm tương tự
+          </Typography>
+          <Grid container spacing={3}>
+            {store.getState().productReducer.list.map((product, index) => (
+              <Grid item xs={6} sm={6} md={3} key={index}>
+                <Link
+                  to={`/product-detail/${product.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
+                    <CardMedia
+                      sx={{ p: 0, m: 0, borderRadius: 0 }}
+                      component="img"
+                      image={product.avatar.imageUrl}
+                      alt={product.name}
+                    />
+                    <MDBox mt={1} mx={2}>
+                      <MDTypography
+                        variant="button"
+                        fontWeight="regular"
+                        color="text"
+                        textTransform="capitalize"
+                      >
+                        {product.currentPrice}
+                      </MDTypography>
+                      <MDBox mb={1}>
+                        <TruncatedTypography
+                          component={Link}
+                          // to={"asdasd"}
+                          variant="h5"
+                          textTransform="capitalize"
+                        >
+                          {product.name}
+                        </TruncatedTypography>
+                      </MDBox>
+                      <MDBox mb={3} lineHeight={0}>
+                        <MultiLineEllipsis
+                          variant="button"
+                          fontWeight="light"
+                          color="text"
+                        >
+                          {product.description}
+                        </MultiLineEllipsis>
+                      </MDBox>
+                    </MDBox>
+                  </Card>
+                </Link>
+                {/* <MDBox display="flex">{renderAuthors}</MDBox> */}
+              </Grid>
+            ))}
           </Grid>
         </Grid>
-      </Grid> */}
+      </Grid>
     </DefaultLayout>
   );
 }

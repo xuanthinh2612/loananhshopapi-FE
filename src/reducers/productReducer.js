@@ -1,4 +1,10 @@
-import { GET_LIST_PRODUCT, GET_PRODUCT } from "../actions/types";
+import {
+  GET_LIST_PRODUCT,
+  GET_PRODUCT,
+  LOADING,
+  FETCH_DATA_FAILURE,
+  FETCH_DATA_SUCCESS,
+} from "../actions/types";
 
 const initProductStatate = {
   list: [],
@@ -11,11 +17,15 @@ function productReducer(productState = initProductStatate, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_LIST_PRODUCT:
-      return { ...productState, list: payload };
+      return { ...productState, list: payload, isLoading: false };
     case GET_PRODUCT:
-      return { ...productState, item: payload };
+      return { ...productState, item: payload, isLoading: false };
+    case LOADING:
+      return { ...productState, isLoading: true };
+    case FETCH_DATA_FAILURE:
+      return { ...productState, isLoading: false, error: payload };
     default:
-      return productState;
+      return { ...productState, isLoading: false };
   }
 }
 

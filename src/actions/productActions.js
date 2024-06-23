@@ -3,11 +3,12 @@ import {
   GET_LIST_PRODUCT,
   GET_PRODUCT,
   FETCH_DATA_FAILURE,
+  LOADING,
 } from "actions/types";
 
 // return list product
 export const getListProductAction = () => async (dispatch) => {
-  //   dispatch(setLoadingStatusAction());
+  dispatch(setLoadingStatusAction());
   try {
     const res = await productService.getProductList();
     dispatch({
@@ -21,7 +22,7 @@ export const getListProductAction = () => async (dispatch) => {
 
 // return list product
 export const getProductAction = (id) => async (dispatch) => {
-  //   dispatch(setLoadingStatusAction());
+  dispatch(setLoadingStatusAction());
   try {
     const res = await productService.getProductById(id);
     dispatch({
@@ -29,15 +30,24 @@ export const getProductAction = (id) => async (dispatch) => {
       payload: res,
     });
   } catch (error) {
-    fetchDataFailureAction(error);
+    dispatch({
+      type: FETCH_DATA_FAILURE,
+      payload: error,
+    });
   }
 };
 
 // handle if any error occurred
-export const fetchDataFailureAction = (error) => async (dispatch) => {
-  // Nếu xảy ra lỗi authentication thì xóa thông tin đăng nhập trong localStorage
+export const fetchDataFailureAction = (error) => (dispatch) => {
   dispatch({
     type: FETCH_DATA_FAILURE,
     payload: error,
+  });
+};
+
+export const setLoadingStatusAction = () => async (dispatch) => {
+  dispatch({
+    type: LOADING,
+    payload: true,
   });
 };

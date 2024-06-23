@@ -15,6 +15,8 @@ import ProductListMng from "components/admin/ProductListMng";
 import ProductNew from "components/admin/ProductNew";
 
 import ProductDetail from "components/productDetail";
+import OrderPage from "components/OderPage";
+import AboutPage from "components/AboutPage/AboutPage";
 
 const routes = [
   {
@@ -22,6 +24,8 @@ const routes = [
     element: ProductDetail,
     notRequireAuth: true,
   },
+  { path: configs.routes.aboutUs, element: AboutPage, notRequireAuth: true },
+  { path: configs.routes.order, element: OrderPage, notRequireAuth: true },
   { path: configs.routes.productNew, element: ProductNew },
   { path: configs.routes.productListMng, element: ProductListMng },
   { path: configs.routes.adminDashboard, element: Dashboard },

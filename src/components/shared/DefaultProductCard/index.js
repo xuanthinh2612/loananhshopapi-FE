@@ -106,9 +106,7 @@ function DefaultProductCard({
           ) : (
             <TruncatedTypography
               component="a"
-              href={action.route}
-              target="_blank"
-              rel="noreferrer"
+              to={action.route}
               variant="h5"
               textTransform="capitalize"
             >
