@@ -46,10 +46,18 @@ import { home } from "assets/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import configs from "configs";
+import { Badge } from "@mui/material";
 
 function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, darkMode } = controller;
+  const {
+    miniSidenav,
+    transparentNavbar,
+    fixedNavbar,
+    darkMode,
+    shoppingCartItem,
+    NotificationItemCount,
+  } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const [openAccountOptions, setOpenAccountOptions] = useState(false);
 
@@ -203,26 +211,30 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                 <Icon sx={iconsStyle}>account_circle</Icon>
               </IconButton>
               {renderAccountOptions()}
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-              >
-                <Icon sx={iconsStyle}>shopping_cart</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                <Icon sx={iconsStyle}>notifications</Icon>
-              </IconButton>
+              <Badge badgeContent={shoppingCartItem} color="primary">
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                >
+                  <Icon sx={iconsStyle}>shopping_cart</Icon>
+                </IconButton>
+              </Badge>
+              <Badge badgeContent={NotificationItemCount} color="primary">
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                  aria-controls="notification-menu"
+                  aria-haspopup="true"
+                  variant="contained"
+                  onClick={handleOpenMenu}
+                >
+                  <Icon sx={iconsStyle}>notifications</Icon>
+                </IconButton>
+              </Badge>
               {renderMenu()}
             </MDBox>
           </MDBox>

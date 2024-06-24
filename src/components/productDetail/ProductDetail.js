@@ -38,9 +38,17 @@ import SpinnerIcon from "components/SpinnerIcon";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import {
+  useMaterialUIController,
+  changeCartItem,
+  changeNotificationItem,
+} from "context";
 
 function ProductDetail(props) {
+  const [controller, dispatch] = useMaterialUIController();
+  const { NotificationItem, shoppingCartItem } = controller;
   const [orderQuantity, setOrderQuantity] = useState(1);
+  const [successSB, setSuccessSB] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -50,43 +58,36 @@ function ProductDetail(props) {
     store.dispatch(getProductAction(id));
   }, [id]);
 
+  const product = props.product;
+
   const handleClickBuyNow = (e) => {
     navigate("/order");
   };
 
-  // const renderAuthors = ({ image: media, name }) => (
-  //   <Tooltip key={name} title={name} placement="bottom">
-  //     <MDAvatar
-  //       src={media}
-  //       alt={name}
-  //       size="xs"
-  //       sx={({ borders: { borderWidth }, palette: { white } }) => ({
-  //         border: `${borderWidth[2]} solid ${white.main}`,
-  //         cursor: "pointer",
-  //         position: "relative",
-  //         ml: -1.25,
+  const handleClickAddToCart = () => {
+    changeCartItem(dispatch, shoppingCartItem + 1);
+    openSuccessSB();
+  };
 
-  //         "&:hover, &:focus": {
-  //           zIndex: "10",
-  //         },
-  //       })}
-  //     />
-  //   </Tooltip>
-  // );
+  const openSuccessSB = () => setSuccessSB(true);
+  const closeSuccessSB = () => setSuccessSB(false);
+
+  const renderSuccessSB = (
+    <MDSnackbar
+      color="success"
+      icon="check"
+      title="Thêm vào giỏ hàng"
+      content={`Bạn đã thêm ${product.name} vào giỏ hàng.`}
+      open={successSB}
+      onClose={closeSuccessSB}
+      close={closeSuccessSB}
+      bgWhite
+    />
+  );
 
   const handleQuantityChange = (newQuantity) => {
     setOrderQuantity(newQuantity);
-    // if (newQuantity > 0) {
-    //   const updatedOrderDetails = [...orderDetails];
-    //   updatedOrderDetails[index].quantity = newQuantity;
-    //   setOrderDetails(updatedOrderDetails);
-    //   updateTotalAmount();
-    // } else {
-    //   handleOpenModal(index);
-    // }
   };
-
-  const product = props.product;
 
   if (props.isLoading) {
     return (
@@ -221,7 +222,7 @@ function ProductDetail(props) {
                     fullWidth
                     sx={{ ml: 1 }}
                     color="warning"
-                    // onClick={(e) => handleLoginForm(e)}
+                    onClick={handleClickAddToCart}
                   >
                     Thêm vào giỏ hàng&nbsp;&nbsp;
                     {<Icon>shopping_cart</Icon>}
@@ -348,6 +349,7 @@ function ProductDetail(props) {
           </Grid>
         </Grid>
       </Grid>
+      {renderSuccessSB}
     </DefaultLayout>
   );
 }

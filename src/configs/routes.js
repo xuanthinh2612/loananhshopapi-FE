@@ -11,8 +11,8 @@ const routes = {
   editClass: "/edit-class/:id",
   login: "/login",
   registration: "/registration",
-  productListMng: "/productListMng",
-  productNew: "/productNew",
+  productListMng: "/product-management",
+  productNew: "/new-product",
   order: "/order",
   aboutUs: "/about",
 };
