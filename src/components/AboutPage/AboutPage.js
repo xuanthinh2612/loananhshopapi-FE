@@ -76,9 +76,9 @@ function AboutPage() {
                     Đảm bảo tính xác thực
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Chúng tôi đảm bảo tất cả sản phẩm của chúng tôi là hàng
-                    chính hãng và được nhập trực tiếp từ các nhà cung cấp uy tín
-                    tại Nhật Bản.
+                    Chúng tôi đảm bảo 100% sản phẩm của chúng tôi là hàng chính
+                    hãng, được nhập trực tiếp từ các nhà cung cấp uy tín tại
+                    Nhật Bản.
                   </Typography>
                 </CardContent>
               </Card>

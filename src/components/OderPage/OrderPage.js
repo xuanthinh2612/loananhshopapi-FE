@@ -43,7 +43,7 @@ function OrderPage() {
   const [errorSB, setErrorSB] = useState(false);
   const openErrorSB = () => setErrorSB(true);
   const closeErrorSB = () => setErrorSB(false);
-  const [validateErrorMsg, setValidateErrorMsg] = useState("");
+  const [validatedResult, setValidatedResult] = useState(true);
 
   const handleOpenModal = (index) => {
     setDeleteIndex(index);
@@ -58,6 +58,7 @@ function OrderPage() {
     orderDetails.splice(index, 1);
     setOrderDetails(orderDetails);
     setModalOpen(false);
+    updateTotalAmount();
   };
 
   // example product list
@@ -76,13 +77,15 @@ function OrderPage() {
     if (name === "phoneNumber") {
       if (value.length > 10) {
         let digits = Array.from(value).filter((char) => /\d/.test(char));
-        const newValue = digits.slice(0, 10).join("");
+        const newValue = digits.slice(0, 11).join("");
         setErrorSB(true);
         setOrder((prevDetails) => ({
           ...prevDetails,
           [name]: newValue,
         }));
         return;
+      } else {
+        setErrorSB(false);
       }
     }
 
@@ -93,9 +96,15 @@ function OrderPage() {
   };
 
   function validatePhoneNumber(phoneNumber) {
-    const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    const regex = /^(03|05|07|08|09)\d{8}$/;
     return regex.test(phoneNumber);
   }
+
+  // function validateEmail(email) {}
+
+  // function validateName(name) {}
+
+  // function validateAddress(address) {}
 
   const updateTotalAmount = () => {
     const updatedOrder = { ...order };
@@ -109,9 +118,15 @@ function OrderPage() {
   };
 
   const handleOrder = () => {
-    // Handle order submission logic here
-    console.log("Order Details:", orderDetails);
-    openErrorSB();
+    // check is valid input
+    const phoneNumber = order.phoneNumber;
+    if (!validatePhoneNumber(phoneNumber)) {
+      setValidatedResult(false);
+      openErrorSB();
+
+      return;
+    }
+    setValidatedResult(true);
   };
 
   useEffect(() => {
@@ -132,46 +147,40 @@ function OrderPage() {
     }
   };
 
-  const renderErrorSB = (
-    <MDSnackbar
-      color="error"
-      icon="warning"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={errorSB}
-      onClose={closeErrorSB}
-      close={closeErrorSB}
-      bgWhite
-    />
-  );
-
   const alertContent = (lable) => (
-    <MDTypography variant="body2" color="white">
-      <MDTypography
-        component="a"
-        href="#"
-        variant="body2"
-        fontWeight="medium"
-        color="white"
-      >
-        {lable}&nbsp;
-      </MDTypography>
-      không hợp lệ. Vui lòng kiểm tra lại.
+    <MDTypography variant="body2" color="white" container>
+      <Grid lg={12}>
+        <MDTypography
+          component="a"
+          href="#"
+          variant="body2"
+          fontWeight="medium"
+          color="white"
+        >
+          {lable}&nbsp;
+        </MDTypography>
+        không hợp lệ. Vui lòng kiểm tra lại.
+      </Grid>
     </MDTypography>
   );
 
   return (
     <DefaultLayout>
       <Container>
-        {errorSB && (
-          <MDAlert color="error" dismissible>
-            {alertContent("Số điện thoại")}
+        {!validatedResult && (
+          <MDAlert
+            color="error"
+            onClick={() => {
+              setValidatedResult(true);
+            }}
+            dismissible
+          >
+            {alertContent("Thông tin đặt hàng")}
           </MDAlert>
         )}
 
         <Typography variant="h2" gutterBottom>
-          Đặt Hàng
+          Chi tiết đơn hàng
         </Typography>
         <Divider />
         <Grid container spacing={4}>
@@ -192,7 +201,7 @@ function OrderPage() {
                       <Grid item xs={12} md={8}>
                         <CardContent>
                           <Typography variant="h5">
-                            {index} - {orderDetail.name}
+                            {orderDetail.name}
                           </Typography>
                           <Typography variant="h6">
                             {formatter.format(orderDetail.currentPrice)}
@@ -327,7 +336,7 @@ function OrderPage() {
             <Card>
               <CardContent>
                 <Typography variant="h4" gutterBottom>
-                  Thông Tin Đặt Hàng
+                  Thông Tin Người Nhận Hàng
                 </Typography>
                 <TextField
                   name="name"
@@ -356,7 +365,25 @@ function OrderPage() {
                   margin="normal"
                   onChange={handleChange}
                   value={order.phoneNumber}
+                  sx={{
+                    "& input[type=number]": {
+                      "-moz-appearance": "textfield",
+                    },
+                    "& input[type=number]::-webkit-outer-spin-button": {
+                      "-webkit-appearance": "none",
+                      margin: 0,
+                    },
+                    "& input[type=number]::-webkit-inner-spin-button": {
+                      "-webkit-appearance": "none",
+                      margin: 0,
+                    },
+                  }}
                 />
+                {errorSB && (
+                  <Typography color={"red"} variant="subtitle2">
+                    Số điện thoại không đúng, vui lòng kiểm tra lại
+                  </Typography>
+                )}
                 <MDBox
                   mb={1}
                   mt={3}
@@ -375,6 +402,42 @@ function OrderPage() {
                 </MDBox>
               </CardContent>
             </Card>
+            <Card sx={{ mt: 2 }}>
+              <CardContent>
+                <Typography variant="h5">Bạn chưa đăng nhập</Typography>
+
+                <MDBox
+                  mb={1}
+                  mt={3}
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <MDButton
+                    fullWidth
+                    sx={{ mr: 1 }}
+                    variant="gradient"
+                    color="info"
+                  >
+                    &nbsp;Đăng nhập
+                  </MDButton>
+                </MDBox>
+                <MDBox
+                  mb={1}
+                  mt={3}
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <MDButton
+                    fullWidth
+                    sx={{ mr: 1 }}
+                    variant="gradient"
+                    color="success"
+                  >
+                    &nbsp;Đăng ký
+                  </MDButton>
+                </MDBox>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
       </Container>
@@ -387,7 +450,6 @@ function OrderPage() {
         title="Xác nhận xóa khỏi giỏ hàng"
         message="Bạn có muốn xóa sản phẩm khỏi giỏ hàng?"
       />
-      {renderErrorSB}
     </DefaultLayout>
   );
 }

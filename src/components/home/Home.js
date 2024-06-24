@@ -37,7 +37,7 @@ import { formatter } from "utils/helper";
 import configs from "configs";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
-import { Card, Typography, CardMedia } from "@mui/material";
+import { Card, Typography, CardMedia, Divider } from "@mui/material";
 import TruncatedTypography from "components/shared/TruncatedTypography";
 import MultiLineEllipsis from "components/shared/MultiLineEllipsis";
 
@@ -60,6 +60,7 @@ function Home(props) {
               Architects design houses
             </MDTypography>
           </MDBox>
+          <Divider />
         </MDBox>
         <MDBox mt={2} p={2}>
           <Grid container spacing={6}>
@@ -84,8 +85,11 @@ function Home(props) {
               })}
           </Grid>
         </MDBox>
+
         <MDBox pt={2} px={2} lineHeight={1.25}>
-          <MDTypography variant="h6" fontWeight="medium">
+          {/* <Divider /> */}
+
+          <MDTypography variant="h4" fontWeight="medium">
             Thực phẩm chức năng
           </MDTypography>
           <MDBox mb={1}>
@@ -93,6 +97,7 @@ function Home(props) {
               Hàng chính hãng từ những thương hiệu hàng đầu
             </MDTypography>
           </MDBox>
+          <Divider />
         </MDBox>
         <MDBox mt={2} p={2}>
           <Grid container spacing={6}>
@@ -119,6 +124,8 @@ function Home(props) {
         </MDBox>
         <Grid container spacing={4} mt={5}>
           <Grid item xs={12}>
+            <Divider />
+
             <Typography variant="h3" mb={3}>
               Sản phẩm tương tự
             </Typography>

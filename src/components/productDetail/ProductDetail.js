@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -15,6 +15,9 @@ import {
   CardContent,
   Box,
   TextField,
+  Divider,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import DefaultLayout from "layouts/defaultLayout";
 // Material Dashboard 2 React components
@@ -33,7 +36,12 @@ import Tooltip from "@mui/material/Tooltip";
 import MDAvatar from "components/shared/MDAvatar";
 import SpinnerIcon from "components/SpinnerIcon";
 
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+
 function ProductDetail(props) {
+  const [orderQuantity, setOrderQuantity] = useState(1);
+
   const navigate = useNavigate();
   const { id } = useParams();
   const isAdmin = isAdminUser();
@@ -65,6 +73,18 @@ function ProductDetail(props) {
   //     />
   //   </Tooltip>
   // );
+
+  const handleQuantityChange = (newQuantity) => {
+    setOrderQuantity(newQuantity);
+    // if (newQuantity > 0) {
+    //   const updatedOrderDetails = [...orderDetails];
+    //   updatedOrderDetails[index].quantity = newQuantity;
+    //   setOrderDetails(updatedOrderDetails);
+    //   updateTotalAmount();
+    // } else {
+    //   handleOpenModal(index);
+    // }
+  };
 
   const product = props.product;
 
@@ -112,23 +132,74 @@ function ProductDetail(props) {
                 height="100%"
               >
                 <Typography variant="h2">{product.name}</Typography>
-                <Typography variant="h4">${product.currentPrice}</Typography>
+                <Typography variant="h4" color={"primary"}>
+                  {formatter.format(product.currentPrice)}
+                </Typography>
                 <Typography variant="subtitle1">
                   Danh Mục: {product.category.name}
                 </Typography>
                 <Typography variant="body1">{product.description}</Typography>
                 <MDBox mt={3} mb={2}>
-                  <Typography variant="h6" sx={{ mr: 2 }}>
-                    Số Lượng:
-                  </Typography>
-                  <TextField
-                    type="number"
-                    defaultValue={1}
-                    InputProps={{ inputProps: { min: 1 } }}
-                    variant="outlined"
-                    size="small"
-                    sx={{ width: "100px" }}
-                  />
+                  <Grid container spacing={2}>
+                    <Grid item xs={6} sm={4}>
+                      <TextField
+                        label="Số lượng"
+                        name="quantity"
+                        type="number"
+                        fullWidth
+                        value={orderQuantity}
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            Math.max(1, Number(e.target.value))
+                          )
+                        }
+                        InputProps={{
+                          inputProps: { min: 1 },
+                          sx: {
+                            "& input[type=number]": {
+                              "-moz-appearance": "textfield",
+                            },
+                            "& input[type=number]::-webkit-outer-spin-button": {
+                              "-webkit-appearance": "none",
+                              margin: 0,
+                            },
+                            "& input[type=number]::-webkit-inner-spin-button": {
+                              "-webkit-appearance": "none",
+                              margin: 0,
+                            },
+                          },
+
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  handleQuantityChange(
+                                    Math.max(1, orderQuantity - 1)
+                                  )
+                                }
+                              >
+                                <RemoveIcon />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  handleQuantityChange(orderQuantity + 1)
+                                }
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={8}></Grid>
+                  </Grid>
                 </MDBox>
                 <MDBox
                   mb={1}
@@ -161,7 +232,9 @@ function ProductDetail(props) {
           </Grid>
           <Grid container spacing={4} mt={5}>
             <Grid item xs={12}>
-              <Typography variant="h3">Mô tả chi tiết</Typography>
+              <Typography variant="h3">Chi tiết mặt hàng</Typography>
+              <Divider />
+
               <Card>
                 {product.subContentList.map((subContent, index) => (
                   <Grid
@@ -219,6 +292,8 @@ function ProductDetail(props) {
       )}
       <Grid container spacing={4} mt={5}>
         <Grid item xs={12}>
+          <Divider />
+
           <Typography variant="h3" mb={3}>
             Sản phẩm tương tự
           </Typography>
@@ -240,10 +315,10 @@ function ProductDetail(props) {
                       <MDTypography
                         variant="button"
                         fontWeight="regular"
-                        color="text"
+                        color="red"
                         textTransform="capitalize"
                       >
-                        {product.currentPrice}
+                        {formatter.format(product.currentPrice)}
                       </MDTypography>
                       <MDBox mb={1}>
                         <TruncatedTypography
