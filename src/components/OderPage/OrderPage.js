@@ -33,6 +33,10 @@ function OrderPage() {
   const product = store.getState().productReducer.item;
   const [isModalOpen, setModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  const [nameError, setNameError] = useState(false);
+  const [addressError, setAddressError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [validatedResult, setValidatedResult] = useState(true);
   const [order, setOrder] = useState({
     name: "",
     email: "",
@@ -40,10 +44,6 @@ function OrderPage() {
     phoneNumber: "",
     totalAmount: 0,
   });
-  const [errorSB, setErrorSB] = useState(false);
-  const openErrorSB = () => setErrorSB(true);
-  const closeErrorSB = () => setErrorSB(false);
-  const [validatedResult, setValidatedResult] = useState(true);
 
   const handleOpenModal = (index) => {
     setDeleteIndex(index);
@@ -72,22 +72,10 @@ function OrderPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // validate Phone number
-    if (name === "phoneNumber") {
-      if (value.length > 10) {
-        let digits = Array.from(value).filter((char) => /\d/.test(char));
-        const newValue = digits.slice(0, 11).join("");
-        setErrorSB(true);
-        setOrder((prevDetails) => ({
-          ...prevDetails,
-          [name]: newValue,
-        }));
-        return;
-      } else {
-        setErrorSB(false);
-      }
-    }
+    setAddressError(false);
+    setNameError(false);
+    setPhoneNumberError(false);
+    setValidatedResult(true);
 
     setOrder((prevDetails) => ({
       ...prevDetails,
@@ -95,16 +83,32 @@ function OrderPage() {
     }));
   };
 
-  function validatePhoneNumber(phoneNumber) {
+  function isValidhoneNumber(phoneNumber) {
     const regex = /^(03|05|07|08|09)\d{8}$/;
     return regex.test(phoneNumber);
   }
 
   // function validateEmail(email) {}
 
-  // function validateName(name) {}
+  function isValidName(name) {
+    const namePatern = /[0-9!@#$%^&*(),.?":{}|<>/\\]/;
 
-  // function validateAddress(address) {}
+    if (name.length > 0) {
+      return !namePatern.test(name);
+    } else {
+      return false;
+    }
+  }
+
+  function isValidAddress(address) {
+    const addressPatern = /[!@#$%^&*()?":{}|<>]/;
+
+    if (address.length > 0) {
+      return !addressPatern.test(address);
+    } else {
+      return false;
+    }
+  }
 
   const updateTotalAmount = () => {
     const updatedOrder = { ...order };
@@ -120,13 +124,27 @@ function OrderPage() {
   const handleOrder = () => {
     // check is valid input
     const phoneNumber = order.phoneNumber;
-    if (!validatePhoneNumber(phoneNumber)) {
-      setValidatedResult(false);
-      openErrorSB();
-
-      return;
+    let hasError = false;
+    if (!isValidhoneNumber(phoneNumber)) {
+      setPhoneNumberError(true);
+      hasError = true;
     }
-    setValidatedResult(true);
+
+    if (!isValidName(order.name)) {
+      hasError = true;
+      setNameError(true);
+    }
+
+    if (!isValidAddress(order.address)) {
+      hasError = true;
+      setAddressError(true);
+    }
+
+    if (hasError) {
+      setValidatedResult(false);
+    } else {
+      setValidatedResult(true);
+    }
   };
 
   useEffect(() => {
@@ -344,18 +362,30 @@ function OrderPage() {
                   label="Tên khách hàng"
                   variant="outlined"
                   margin="normal"
-                  // value={order.name}
+                  value={order.name}
                   onChange={handleChange}
                 />
+                {nameError && (
+                  <Typography color={"red"} variant="subtitle2">
+                    Tên không hợp lệ
+                  </Typography>
+                )}
+
                 <TextField
                   name="address"
                   fullWidth
                   label="Địa chỉ giao hàng"
                   variant="outlined"
                   margin="normal"
-                  // value={order.address}
+                  value={order.address}
                   onChange={handleChange}
                 />
+                {addressError && (
+                  <Typography color={"red"} variant="subtitle2">
+                    Địa chỉ không hợp lệ
+                  </Typography>
+                )}
+
                 <TextField
                   name="phoneNumber"
                   type="number"
@@ -379,7 +409,7 @@ function OrderPage() {
                     },
                   }}
                 />
-                {errorSB && (
+                {phoneNumberError && (
                   <Typography color={"red"} variant="subtitle2">
                     Số điện thoại không đúng, vui lòng kiểm tra lại
                   </Typography>

@@ -24,3 +24,11 @@ export const getProductById = async (id) => {
 //     const res = await httpRequest.deleteRequest(`/class/delete/${id}`);
 //     return res;
 // };
+
+//=======================ADMIN=========================================
+
+export const getProductListByAdmin = async () => {
+  console.log("call api admin");
+  const res = await httpRequest.get("/api/admin/product/list");
+  return res;
+};

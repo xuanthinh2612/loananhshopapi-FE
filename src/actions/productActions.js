@@ -4,6 +4,7 @@ import {
   GET_PRODUCT,
   FETCH_DATA_FAILURE,
   LOADING,
+  GET_PRODUCT_BY_ADMIN,
 } from "actions/types";
 
 // return list product
@@ -37,6 +38,27 @@ export const getProductAction = (id) => async (dispatch) => {
   }
 };
 
+//==============================================ADMIN======================================
+
+// return list product
+export const getListProductByAdminAction = () => async (dispatch) => {
+  dispatch(setLoadingStatusAction());
+  try {
+    const res = await productService.getProductListByAdmin();
+    dispatch({
+      type: GET_PRODUCT_BY_ADMIN,
+      payload: res,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_DATA_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+//=======================COMMON===============================================================
+
 // handle if any error occurred
 export const fetchDataFailureAction = (error) => (dispatch) => {
   dispatch({
@@ -45,6 +67,7 @@ export const fetchDataFailureAction = (error) => (dispatch) => {
   });
 };
 
+// set loading status before fetch api
 export const setLoadingStatusAction = () => async (dispatch) => {
   dispatch({
     type: LOADING,

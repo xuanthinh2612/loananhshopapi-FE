@@ -11,12 +11,12 @@ import ClassDetailForm from "components/ClassDetailForm";
 import LoginForm from "components/authentication/sign-in";
 import RegistrationForm from "components/authentication/sign-up/RegistrationForm";
 import Dashboard from "components/admin/Dashboard";
-import ProductListMng from "components/admin/ProductListMng";
 import ProductNew from "components/admin/ProductNew";
 
 import ProductDetail from "components/productDetail";
 import OrderPage from "components/OderPage";
 import AboutPage from "components/AboutPage/AboutPage";
+import ProductManagement from "components/admin/ProductManagement";
 
 const routes = [
   {
@@ -27,7 +27,7 @@ const routes = [
   { path: configs.routes.aboutUs, element: AboutPage, notRequireAuth: true },
   { path: configs.routes.order, element: OrderPage, notRequireAuth: true },
   { path: configs.routes.productNew, element: ProductNew },
-  { path: configs.routes.productListMng, element: ProductListMng },
+  { path: configs.routes.productListMng, element: ProductManagement },
   { path: configs.routes.adminDashboard, element: Dashboard },
   { path: configs.routes.home, element: Home, notRequireAuth: true },
   { path: configs.routes.studentList, element: StudentList },
