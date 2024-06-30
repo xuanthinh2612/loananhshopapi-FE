@@ -5,6 +5,7 @@ import {
   FETCH_DATA_FAILURE,
   FETCH_DATA_SUCCESS,
   GET_PRODUCT_BY_ADMIN,
+  CREATE_PRODUCT,
 } from "../actions/types";
 
 const initProductStatate = {
@@ -17,6 +18,8 @@ const initProductStatate = {
 function productReducer(productState = initProductStatate, action) {
   const { type, payload } = action;
   switch (type) {
+    case CREATE_PRODUCT:
+      return { ...productState, item: payload, isLoading: false };
     case GET_LIST_PRODUCT:
       return { ...productState, list: payload, isLoading: false };
     case GET_PRODUCT:

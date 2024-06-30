@@ -246,19 +246,23 @@ function ProductDetail(props) {
                     justifyContent="center"
                   >
                     <Grid item xs={12} md={6}>
-                      <Card>
-                        <CardMedia
-                          sx={{ p: 0, m: 0 }}
-                          component="img"
-                          image={subContent.image.imageUrl}
-                          alt={product.name}
-                        />
-                      </Card>
-                      <CardContent sx={{ textAlign: "center", pt: 1 }}>
-                        <Typography variant="caption">
-                          {subContent.title}
-                        </Typography>
-                      </CardContent>
+                      {subContent.image.imageUrl && (
+                        <>
+                          <Card>
+                            <CardMedia
+                              sx={{ p: 0, m: 0 }}
+                              component="img"
+                              image={subContent.image.imageUrl}
+                              alt={product.name}
+                            />
+                          </Card>
+                          <CardContent sx={{ textAlign: "center", pt: 1 }}>
+                            <Typography variant="caption">
+                              {subContent.title}
+                            </Typography>
+                          </CardContent>
+                        </>
+                      )}
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Box display="flex" alignItems="center" height="100%">

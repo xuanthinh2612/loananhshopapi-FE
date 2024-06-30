@@ -48,16 +48,43 @@ Coded by www.creative-tim.com
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import NewProductPage from "components/admin/NewProductPage/NewProductPage";
+import ProductManagement from "components/admin/ProductManagement";
 
 const sidenavRoutes = [
-  // {
-  //   type: "collapse",
-  //   name: "Dashboard",
-  //   key: "dashboard",
-  //   icon: <Icon fontSize="small">dashboard</Icon>,
-  //   route: "/dashboard",
-  //   component: <Dashboard />,
-  // },
+  {
+    type: "collapse",
+    name: "Trang Chủ",
+    key: "dashboard",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/adminDashboard",
+    // component: null,
+  },
+  {
+    type: "collapse",
+    name: "Danh Sách Hàng",
+    key: "dashboard",
+
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/product-management",
+    // component: <ProductManagement />,
+  },
+  {
+    type: "collapse",
+    name: "Thêm Sản phẩm mới",
+    key: "dashboard",
+    icon: <Icon fontSize="small">add_circle</Icon>,
+    route: "/new-product",
+    // component: <NewProductPage />,
+  },
+  {
+    type: "collapse",
+    name: "Quản lý User",
+    key: "dashboard",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/new-product",
+    // component: <NewProductPage />,
+  },
   // {
   //   type: "collapse",
   //   name: "Tables",

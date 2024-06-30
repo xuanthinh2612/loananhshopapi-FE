@@ -42,8 +42,8 @@ import MDInput from "components/shared/MDInput";
 import MDPagination from "components/shared/MDPagination";
 
 // Material Dashboard 2 React example components
-import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
-import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
+import DataTableHeadCell from "components/shared/DataTable/DataTableHeadCell";
+import DataTableBodyCell from "components/shared/DataTable/DataTableBodyCell";
 
 function DataTable({
   entriesPerPage,

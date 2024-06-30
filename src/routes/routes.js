@@ -11,12 +11,13 @@ import ClassDetailForm from "components/ClassDetailForm";
 import LoginForm from "components/authentication/sign-in";
 import RegistrationForm from "components/authentication/sign-up/RegistrationForm";
 import Dashboard from "components/admin/Dashboard";
-import ProductNew from "components/admin/ProductNew";
 
 import ProductDetail from "components/productDetail";
 import OrderPage from "components/OderPage";
 import AboutPage from "components/AboutPage/AboutPage";
 import ProductManagement from "components/admin/ProductManagement";
+import NewProductPage from "components/admin/NewProductPage";
+import EditProductPage from "components/admin/EditProductPage/EditProductPage";
 
 const routes = [
   {
@@ -24,9 +25,11 @@ const routes = [
     element: ProductDetail,
     notRequireAuth: true,
   },
+
   { path: configs.routes.aboutUs, element: AboutPage, notRequireAuth: true },
   { path: configs.routes.order, element: OrderPage, notRequireAuth: true },
-  { path: configs.routes.productNew, element: ProductNew },
+  { path: configs.routes.productNew, element: NewProductPage },
+  { path: configs.routes.editProduct, element: EditProductPage },
   { path: configs.routes.productListMng, element: ProductManagement },
   { path: configs.routes.adminDashboard, element: Dashboard },
   { path: configs.routes.home, element: Home, notRequireAuth: true },

@@ -5,6 +5,7 @@ import {
   FETCH_DATA_FAILURE,
   LOADING,
   GET_PRODUCT_BY_ADMIN,
+  CREATE_PRODUCT,
 } from "actions/types";
 
 // return list product
@@ -57,6 +58,21 @@ export const getListProductByAdminAction = () => async (dispatch) => {
   }
 };
 
+export const createProductAction = (productDetails) => async (dispatch) => {
+  dispatch(setLoadingStatusAction());
+  try {
+    const res = await productService.createProduct(productDetails);
+    dispatch({
+      type: CREATE_PRODUCT,
+      payload: res,
+    });
+  } catch (error) {
+    dispatch({
+      type: FETCH_DATA_FAILURE,
+      payload: error,
+    });
+  }
+};
 //=======================COMMON===============================================================
 
 // handle if any error occurred

@@ -1,6 +1,6 @@
 import EnhancedTable from "../EnhancedTable";
 import { Link, useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { pencel, trash, plus } from "assets/icons";
 import configs from "configs";
 // import ConfirmModal from "./ConfirmModal";
@@ -20,136 +20,71 @@ import { connect } from "react-redux";
 import MDBox from "components/shared/MDBox";
 import { Card, Grid } from "@mui/material";
 import MDTypography from "components/shared/MDTypography";
-import DataTable from "examples/Tables/DataTable";
 
 // Data
-import authorsTableData from "./data/authorsTableData";
-import projectsTableData from "./data/projectsTableData";
+import MDButton from "components/shared/MDButton";
+import ProductTableData from "./data/ProductTableData";
 
 function ProductManagement(props) {
-  // const navigate = useNavigate();
+  const [updateFlg, setUpdateFlg] = useState(false);
+
   const isAdmin = isAdminUser();
   const isAuth = isUserLoggedIn();
 
   useEffect(() => {
     // get product list
     store.dispatch(getListProductByAdminAction());
-  }, []);
+    setUpdateFlg(false);
+  }, [updateFlg]);
 
-  console.log(store.getState());
-  //   const handleEdit = (studentId) => {
-  //     navigate(`/edit-student/${studentId}`);
-  //   };
-
-  //   const handleDelete = async (studentId) => {
-  //     // await store.dispatch(deleteStudentByIdAction(studentId));
-  //   };
-
-  //   if (props.error) {
-  //     return (
-  //       <div>
-  //         Opp! Some error Occured with status: {props.error.response.status} -{" "}
-  //         {props.error.message}
-  //       </div>
-  //     );
-  //   }
-
-  //   if (props.isLoading) {
-  //     return (
-  //       <div className="container">
-  //         <div className="text-center">{SpinnerIcon}</div>
-  //       </div>
-  //     );
-  //   }
-
-  const { columns, rows } = authorsTableData();
-  const { columns: pColumns, rows: pRows } = projectsTableData();
+  if (props.error) {
+    return (
+      <div>
+        Ôi! Đã có lỗi xảy ra. status: {props.error.response.status} -
+        {props.error.message}
+      </div>
+    );
+  }
 
   return (
     <AdminLayout>
-      <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Authors Table
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                {/* <DataTable
-                  table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                /> */}
-              </MDBox>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Projects Table
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                {/* <DataTable
-                  table={{ columns: pColumns, rows: pRows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                /> */}
-              </MDBox>
-            </Card>
-          </Grid>
-        </Grid>
-      </MDBox>
+      <Grid item xs={12}>
+        <Card>
+          <MDBox
+            mx={0}
+            mt={0}
+            py={3}
+            px={2}
+            variant="gradient"
+            bgColor="info"
+            borderRadius="lg"
+            coloredShadow="info"
+          >
+            <MDTypography variant="h6" color="white">
+              Danh Sách Sản Phẩm&nbsp;
+              <MDButton href={configs.routes.newProduct}>New</MDButton>
+            </MDTypography>
+          </MDBox>
 
-      {/* {props.listProduct && props.listProduct.length > 0 ? (
-              <>
-                {props.listProduct.map((product) => {
-                  return (
-                    <tr key={product.id}>
-                      <th scope="row">{product.id}</th>
-                      <td>
-                        <Link
-                          className="text-decoration-none"
-                          to={`/product-detail/${product.id}`}
-                        >
-                          {product.namme}
-                        </Link>
-                      </td>
-                      {isAdmin && <td></td>}
-                    </tr>
-                  );
-                })}
-              </>
-            ) : (
-              <tr className="text-center">
-                <td colSpan={7}>No Data To Show.</td>
-              </tr>
-            )} */}
+          {props.isLoading ? (
+            <MDBox
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              p={3}
+            >
+              {SpinnerIcon}
+            </MDBox>
+          ) : (
+            <MDBox pt={3}>
+              <ProductTableData
+                callback={setUpdateFlg}
+                productList={props.listProduct}
+              />
+            </MDBox>
+          )}
+        </Card>
+      </Grid>
     </AdminLayout>
   );
 }
