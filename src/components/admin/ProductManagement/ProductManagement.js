@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import MDBox from "components/shared/MDBox";
 import { Card, Grid } from "@mui/material";
 import MDTypography from "components/shared/MDTypography";
+import AddIcon from "@mui/icons-material/Add";
 
 // Data
 import MDButton from "components/shared/MDButton";
@@ -49,6 +50,17 @@ function ProductManagement(props) {
   return (
     <AdminLayout>
       <Grid item xs={12}>
+        <Link to={configs.routes.newProduct}>
+          <MDButton
+            variant="contained"
+            color="info"
+            startIcon={<AddIcon />}
+            style={{ marginBottom: "20px" }}
+          >
+            Thêm Mới
+          </MDButton>
+        </Link>
+
         <Card>
           <MDBox
             mx={0}
@@ -62,7 +74,6 @@ function ProductManagement(props) {
           >
             <MDTypography variant="h6" color="white">
               Danh Sách Sản Phẩm&nbsp;
-              <MDButton href={configs.routes.newProduct}>New</MDButton>
             </MDTypography>
           </MDBox>
 

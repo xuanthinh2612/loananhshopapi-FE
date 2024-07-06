@@ -90,7 +90,7 @@ function AdminLayout({ children }) {
             ? brandDark
             : brandWhite
         }
-        brandName="Trang Chủ"
+        brandName="LoanAnhShop"
         routes={sidenavRoutes}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}

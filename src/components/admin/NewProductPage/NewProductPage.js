@@ -26,7 +26,7 @@ import { createProduct } from "service/productService";
 import MDSnackbar from "components/shared/MDSnackbar";
 
 const NewProductPage = () => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const [errorAlert, setErrorAlert] = useState(false);
 
   const [categoryList, setCategoryList] = useState([]);
@@ -155,7 +155,7 @@ const NewProductPage = () => {
       if (result === "error") {
         openErrorAlert();
       } else if (result === "success") {
-        navigator(configs.routes.productListMng);
+        navigate(configs.routes.productListMng);
       }
     } catch (error) {
       openErrorAlert();
@@ -419,6 +419,14 @@ const NewProductPage = () => {
             <CardActions>
               <MDButton type="submit" variant="contained" color="success">
                 Tạo Sản Phẩm
+              </MDButton>
+              <MDButton
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={() => navigate(-1)}
+              >
+                Hủy
               </MDButton>
             </CardActions>
           </Card>

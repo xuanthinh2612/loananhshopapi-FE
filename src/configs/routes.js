@@ -11,10 +11,17 @@ const routes = {
   login: "/login",
   registration: "/registration",
   productListMng: "/product-management",
-  productNew: "/new-product",
+  newProduct: "/new-product",
   editProduct: "/edit-product/:id",
   order: "/order",
   aboutUs: "/about",
+  newCategory: "/new-category",
+  categories: "/categories",
+  userManagement: "/user-management",
+  categoryEditWith: "/category-edit",
+  categoryEdit: "/category-edit/:id",
+  blogsManagement: "/blogs-management",
+  blogs: "/blogs",
 };
 
 export default routes;

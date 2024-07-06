@@ -18,6 +18,11 @@ import AboutPage from "components/AboutPage/AboutPage";
 import ProductManagement from "components/admin/ProductManagement";
 import NewProductPage from "components/admin/NewProductPage";
 import EditProductPage from "components/admin/EditProductPage/EditProductPage";
+import NewCategoryPage from "components/admin/NewCategoryPage";
+import UserManagementPage from "components/admin/UserManagementPage";
+import CategoryListPage from "components/admin/CategoryListPage";
+import EditCategoryPage from "components/admin/EditCategoryPage/EditCategoryPage";
+import BlogManagement from "components/admin/BlogManagement/BlogManagement";
 
 const routes = [
   {
@@ -28,7 +33,7 @@ const routes = [
 
   { path: configs.routes.aboutUs, element: AboutPage, notRequireAuth: true },
   { path: configs.routes.order, element: OrderPage, notRequireAuth: true },
-  { path: configs.routes.productNew, element: NewProductPage },
+  { path: configs.routes.newProduct, element: NewProductPage },
   { path: configs.routes.editProduct, element: EditProductPage },
   { path: configs.routes.productListMng, element: ProductManagement },
   { path: configs.routes.adminDashboard, element: Dashboard },
@@ -47,6 +52,12 @@ const routes = [
     element: RegistrationForm,
     notRequireAuth: true,
   },
+  { path: configs.routes.newCategory, element: NewCategoryPage },
+  { path: configs.routes.categories, element: CategoryListPage },
+  { path: configs.routes.categoryEdit, element: EditCategoryPage },
+
+  { path: configs.routes.userManagement, element: UserManagementPage },
+  { path: configs.routes.blogsManagement, element: BlogManagement },
 ];
 
 export default routes;

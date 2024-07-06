@@ -26,7 +26,7 @@ import MDSnackbar from "components/shared/MDSnackbar";
 
 const EditProductPage = () => {
   const { id } = useParams();
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const [errorAlert, setErrorAlert] = useState(false);
 
   const [categoryList, setCategoryList] = useState([]);
@@ -155,7 +155,7 @@ const EditProductPage = () => {
       if (result === "error") {
         openErrorAlert();
       } else if (result === "success") {
-        navigator(configs.routes.productListMng);
+        navigate(configs.routes.productListMng);
       }
     } catch (error) {
       openErrorAlert();
@@ -427,6 +427,14 @@ const EditProductPage = () => {
             <CardActions>
               <MDButton type="submit" variant="contained" color="success">
                 Cập nhật
+              </MDButton>
+              <MDButton
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={() => navigate(-1)}
+              >
+                Hủy
               </MDButton>
             </CardActions>
           </Card>

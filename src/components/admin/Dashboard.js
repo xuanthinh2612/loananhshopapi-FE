@@ -32,7 +32,10 @@ function Dashboard() {
             <div className="card bg-warning text-white mb-4">
               <div className="card-body">Phân Loại Hàng</div>
               <div className="card-footer d-flex align-items-center justify-content-between">
-                <Link className="small text-white stretched-link">
+                <Link
+                  className="small text-white stretched-link"
+                  to={configs.routes.categories}
+                >
                   Chi Tiết
                 </Link>
                 <div className="small text-white">
@@ -97,7 +100,10 @@ function Dashboard() {
             <div className="card bg-info text-white mb-4">
               <div className="card-body">Danh Sách User</div>
               <div className="card-footer d-flex align-items-center justify-content-between">
-                <Link className="small text-white stretched-link">
+                <Link
+                  className="small text-white stretched-link"
+                  to={configs.routes.userManagement}
+                >
                   Chi Tiết
                 </Link>
                 <div className="small text-white">
