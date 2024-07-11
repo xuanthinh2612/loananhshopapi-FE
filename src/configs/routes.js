@@ -22,6 +22,7 @@ const routes = {
   categoryEdit: "/category-edit/:id",
   blogsManagement: "/blogs-management",
   blogs: "/blogs",
+  blogDetails: "/blog/:id",
 };
 
 export default routes;

@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -47,8 +32,21 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import configs from "configs";
 import { Badge } from "@mui/material";
+//=====================ADD-MORE================
+import {
+  cleanUpSessionAndStorageData,
+  isUserLoggedIn,
+  getLoggedInUser,
+} from "service/authService";
+import MDButton from "components/shared/MDButton";
+import MDTypography from "components/shared/MDTypography";
+import { isAdminUser } from "service/authService";
 
 function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
+  const navigate = useNavigate();
+  const isSignedIn = isUserLoggedIn();
+  const isAdmin = isAdminUser();
+
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -61,27 +59,33 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
   const [openMenu, setOpenMenu] = useState(false);
   const [openAccountOptions, setOpenAccountOptions] = useState(false);
 
-  useEffect(() => {
-    // A function that sets the transparent state of the navbar.
-    function handleTransparentNavbar() {
-      setTransparentNavbar(
-        dispatch,
-        (fixedNavbar && window.scrollY === 0) || !fixedNavbar
-      );
-    }
+  // logout
+  function handleLogout() {
+    cleanUpSessionAndStorageData();
+    navigate("/login");
+  }
 
-    /** 
+  // useEffect(() => {
+  // A function that sets the transparent state of the navbar.
+  // function handleTransparentNavbar() {
+  //   setTransparentNavbar(
+  //     dispatch,
+  //     (fixedNavbar && window.scrollY === 0) || !fixedNavbar
+  //   );
+  // }
+
+  /** 
      The event listener that's calling the handleTransparentNavbar function when 
      scrolling the window.
     */
-    window.addEventListener("scroll", handleTransparentNavbar);
+  // window.addEventListener("scroll", handleTransparentNavbar);
 
-    // Call the handleTransparentNavbar function to set the state with the initial value.
-    handleTransparentNavbar();
+  // Call the handleTransparentNavbar function to set the state with the initial value.
+  // handleTransparentNavbar();
 
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("scroll", handleTransparentNavbar);
-  }, [dispatch, fixedNavbar]);
+  // Remove event listener on cleanup
+  // return () => window.removeEventListener("scroll", handleTransparentNavbar);
+  // }, [dispatch, fixedNavbar]);
 
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
@@ -126,16 +130,61 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
       onClose={handleCloseAccountOptions}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title="Thông tin cá nhân" />
-      <NotificationItem
-        icon={<Icon>podcasts</Icon>}
-        to={configs.routes.home}
-        title="Đăng Nhập"
-      />
-      <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Tài khoản" />
+      {isSignedIn ? (
+        <span>
+          <NotificationItem
+            onClick={handleLogout}
+            icon={<Icon>logout</Icon>}
+            title="Đăng Xuất"
+          />
+          <NotificationItem
+            icon={<Icon>settings</Icon>}
+            title="Thông tin tài khoản"
+          />
+        </span>
+      ) : (
+        <NotificationItem
+          onClick={() => navigate("/login")}
+          icon={<Icon>login</Icon>}
+          title="Đăng Nhập"
+        />
+      )}
     </Menu>
   );
 
+  const renderCartOptions = () => (
+    <Menu
+      anchorEl={openAccountOptions}
+      anchorReference={null}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      open={Boolean(openAccountOptions)}
+      onClose={handleCloseAccountOptions}
+      sx={{ mt: 2 }}
+    >
+      {isSignedIn ? (
+        <>
+          <NotificationItem
+            onClick={handleLogout}
+            icon={<Icon>logout</Icon>}
+            title="Đăng Xuất"
+          />
+          <NotificationItem
+            icon={<Icon>settings</Icon>}
+            title="Thông tin tài khoản"
+          />
+        </>
+      ) : (
+        <NotificationItem
+          onClick={() => navigate("/login")}
+          icon={<Icon>login</Icon>}
+          title="Đăng Nhập"
+        />
+      )}
+    </Menu>
+  );
   // Styles for the navbar icons
   const iconsStyle = ({
     palette: { dark, white, text },
@@ -157,11 +206,11 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <MDBox
           sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
-            p: 3,
+            p: 2,
             position: "relative",
             [breakpoints.up("xl")]: {
-              marginLeft: miniSidenav ? pxToRem(120) : pxToRem(120),
-              marginRight: miniSidenav ? pxToRem(120) : pxToRem(120),
+              marginLeft: miniSidenav ? pxToRem(0) : pxToRem(120),
+              marginRight: miniSidenav ? pxToRem(0) : pxToRem(120),
               transition: transitions.create(["margin-left", "margin-right"], {
                 easing: transitions.easing.easeInOut,
                 duration: transitions.duration.standard,
@@ -172,17 +221,12 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
           <MDBox lineHeight={1.25}>
             <NavLink to={configs.routes.home}>
               <IconButton sx={navbarIconButton} size="small" disableRipple>
-                {home}
+                {home}&nbsp; LoanAnh Shop
               </IconButton>
             </NavLink>
-            <NavLink to={configs.routes.home}>
+            <NavLink to={configs.routes.blogs}>
               <IconButton sx={navbarIconButton} size="small" disableRipple>
-                LoanAnh Shop
-              </IconButton>
-            </NavLink>
-            <NavLink to={configs.routes.login}>
-              <IconButton sx={navbarIconButton} size="small" disableRipple>
-                Blog
+                Blogs
               </IconButton>
             </NavLink>
             <NavLink to={configs.routes.aboutUs}>
@@ -190,38 +234,29 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                 Giới thiệu
               </IconButton>
             </NavLink>
+            {isAdmin && (
+              <NavLink to={configs.routes.adminDashboard}>
+                <IconButton size="small" disableRipple color="warning">
+                  ADMIN PAGE
+                </IconButton>
+              </NavLink>
+            )}
           </MDBox>
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
+            <MDBox pr={1} mx={0} size="small">
               <MDInput label="Tìm kiếm" />
             </MDBox>
-            <MDBox color={light ? "white" : "inherit"}>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenAccountOptions}
-              >
-                <Icon sx={iconsStyle}>account_circle</Icon>
-              </IconButton>
-              {renderAccountOptions()}
-              <Badge badgeContent={shoppingCartItem} color="primary">
-                <IconButton
-                  size="small"
-                  disableRipple
-                  color="inherit"
-                  sx={navbarIconButton}
+            {isSignedIn ? (
+              <MDBox color={light ? "white" : "inherit"}>
+                <MDTypography
+                  display="inline"
+                  variant="body2"
+                  verticalAlign="middle"
                 >
-                  <Icon sx={iconsStyle}>shopping_cart</Icon>
-                </IconButton>
-              </Badge>
-              <Badge badgeContent={NotificationItemCount} color="primary">
+                  &nbsp;{getLoggedInUser()}
+                </MDTypography>
                 <IconButton
                   size="small"
                   disableRipple
@@ -230,13 +265,51 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                   aria-controls="notification-menu"
                   aria-haspopup="true"
                   variant="contained"
-                  onClick={handleOpenMenu}
+                  onClick={handleOpenAccountOptions}
                 >
-                  <Icon sx={iconsStyle}>notifications</Icon>
+                  <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
-              </Badge>
-              {renderMenu()}
-            </MDBox>
+                {renderAccountOptions()}
+                <Badge badgeContent={shoppingCartItem} color="primary">
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarIconButton}
+                  >
+                    <Icon sx={iconsStyle}>shopping_cart</Icon>
+                  </IconButton>
+                </Badge>
+                <Badge badgeContent={NotificationItemCount} color="primary">
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarIconButton}
+                    aria-controls="notification-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    onClick={handleOpenMenu}
+                  >
+                    <Icon sx={iconsStyle}>notifications</Icon>
+                  </IconButton>
+                </Badge>
+                {renderMenu()}
+              </MDBox>
+            ) : (
+              <>
+                <MDBox mx={1}>
+                  <MDButton color="warning" onClick={() => navigate("/login")}>
+                    &nbsp;Đăng Nhập<Icon>login</Icon>
+                  </MDButton>
+                </MDBox>
+                <MDBox mx={1}>
+                  <MDButton color="success" onClick={() => navigate("/login")}>
+                    &nbsp;Đăng Ký<Icon>login</Icon>
+                  </MDButton>
+                </MDBox>
+              </>
+            )}
           </MDBox>
         )}
       </Toolbar>

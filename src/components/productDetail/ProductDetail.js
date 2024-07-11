@@ -112,248 +112,259 @@ function ProductDetail(props) {
 
   return (
     <DefaultLayout>
-      {product.id && (
-        <>
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
-              <Card p={0} m={0}>
-                <CardMedia
-                  sx={{ p: 0, m: 0 }}
-                  component="img"
-                  image={product.avatar.imageUrl}
-                  alt={product.name}
-                />
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                height="100%"
-              >
-                <Typography variant="h2">{product.name}</Typography>
-                <Typography variant="h4" color={"primary"}>
-                  {formatter.format(product.currentPrice)}
-                </Typography>
-                <Typography variant="subtitle1">
-                  Danh Mục: {product.category.name}
-                </Typography>
-                <Typography variant="body1">{product.description}</Typography>
-                <MDBox mt={3} mb={2}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6} sm={4}>
-                      <TextField
-                        label="Số lượng"
-                        name="quantity"
-                        type="number"
-                        fullWidth
-                        value={orderQuantity}
-                        onChange={(e) =>
-                          handleQuantityChange(
-                            Math.max(1, Number(e.target.value))
-                          )
-                        }
-                        InputProps={{
-                          inputProps: { min: 1 },
-                          sx: {
-                            "& input[type=number]": {
-                              "-moz-appearance": "textfield",
-                            },
-                            "& input[type=number]::-webkit-outer-spin-button": {
-                              "-webkit-appearance": "none",
-                              margin: 0,
-                            },
-                            "& input[type=number]::-webkit-inner-spin-button": {
-                              "-webkit-appearance": "none",
-                              margin: 0,
-                            },
-                          },
-
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  handleQuantityChange(
-                                    Math.max(1, orderQuantity - 1)
-                                  )
-                                }
-                              >
-                                <RemoveIcon />
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  handleQuantityChange(orderQuantity + 1)
-                                }
-                              >
-                                <AddIcon />
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={6} sm={8}></Grid>
-                  </Grid>
-                </MDBox>
-                <MDBox
-                  mb={1}
-                  mt={3}
+      <Container>
+        {product.id && (
+          <>
+            <Grid container spacing={4}>
+              <Grid item xs={12} md={6}>
+                <Card p={0} m={0}>
+                  <CardMedia
+                    sx={{ p: 0, m: 0 }}
+                    component="img"
+                    image={product.avatar.imageUrl}
+                    alt={product.name}
+                  />
+                </Card>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box
                   display="flex"
-                  justifyContent="space-between"
+                  flexDirection="column"
+                  justifyContent="center"
+                  height="100%"
                 >
-                  <MDButton
-                    fullWidth
-                    sx={{ mr: 1 }}
-                    variant="gradient"
-                    color="success"
-                    onClick={(e) => handleClickBuyNow(e)}
-                  >
-                    &nbsp;Mua Ngay
-                  </MDButton>
-                  <MDButton
-                    variant="gradient"
-                    fullWidth
-                    sx={{ ml: 1 }}
-                    color="warning"
-                    onClick={handleClickAddToCart}
-                  >
-                    Thêm vào giỏ hàng&nbsp;&nbsp;
-                    {<Icon>shopping_cart</Icon>}
-                  </MDButton>
-                </MDBox>
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid container spacing={4} mt={5}>
-            <Grid item xs={12}>
-              <Typography variant="h3">Chi tiết mặt hàng</Typography>
-              <Divider />
+                  <Typography variant="h2">{product.name}</Typography>
+                  <Typography variant="h4" color={"primary"}>
+                    {formatter.format(product.currentPrice)}
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Danh Mục: {product.category.name}
+                  </Typography>
+                  <Typography variant="body1">{product.description}</Typography>
+                  <MDBox mt={3} mb={2}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6} sm={4}>
+                        <TextField
+                          label="Số lượng"
+                          name="quantity"
+                          type="number"
+                          fullWidth
+                          value={orderQuantity}
+                          onChange={(e) =>
+                            handleQuantityChange(
+                              Math.max(1, Number(e.target.value))
+                            )
+                          }
+                          InputProps={{
+                            inputProps: { min: 1 },
+                            sx: {
+                              "& input[type=number]": {
+                                "-moz-appearance": "textfield",
+                              },
+                              "& input[type=number]::-webkit-outer-spin-button":
+                                {
+                                  "-webkit-appearance": "none",
+                                  margin: 0,
+                                },
+                              "& input[type=number]::-webkit-inner-spin-button":
+                                {
+                                  "-webkit-appearance": "none",
+                                  margin: 0,
+                                },
+                            },
 
-              <Card>
-                {product.subContentList.map((subContent, index) => (
-                  <Grid
-                    key={index}
-                    p={2}
-                    mb={0}
-                    container
-                    justifyContent="center"
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <IconButton
+                                  size="small"
+                                  onClick={() =>
+                                    handleQuantityChange(
+                                      Math.max(1, orderQuantity - 1)
+                                    )
+                                  }
+                                >
+                                  <RemoveIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  size="small"
+                                  onClick={() =>
+                                    handleQuantityChange(orderQuantity + 1)
+                                  }
+                                >
+                                  <AddIcon />
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={6} sm={8}></Grid>
+                    </Grid>
+                  </MDBox>
+                  <MDBox
+                    mb={1}
+                    mt={3}
+                    display="flex"
+                    justifyContent="space-between"
                   >
-                    <Grid item xs={12} md={6}>
-                      {subContent.image.imageUrl && (
-                        <>
-                          <Card>
-                            <CardMedia
-                              sx={{ p: 0, m: 0 }}
-                              component="img"
-                              image={subContent.image.imageUrl}
-                              alt={product.name}
-                            />
-                          </Card>
-                          <CardContent sx={{ textAlign: "center", pt: 1 }}>
-                            <Typography variant="caption">
-                              {subContent.title}
+                    <MDButton
+                      fullWidth
+                      sx={{ mr: 1 }}
+                      variant="gradient"
+                      color="success"
+                      onClick={(e) => handleClickBuyNow(e)}
+                    >
+                      &nbsp;Mua Ngay
+                    </MDButton>
+                    <MDButton
+                      variant="gradient"
+                      fullWidth
+                      sx={{ ml: 1 }}
+                      color="warning"
+                      onClick={handleClickAddToCart}
+                    >
+                      Thêm vào giỏ hàng&nbsp;&nbsp;
+                      {<Icon>shopping_cart</Icon>}
+                    </MDButton>
+                  </MDBox>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid container spacing={4} mt={5}>
+              <Grid item xs={12}>
+                <Typography variant="h3">Chi tiết mặt hàng</Typography>
+                <Divider />
+
+                <Card>
+                  {product.subContentList.map((subContent, index) => (
+                    <Grid
+                      key={index}
+                      p={2}
+                      mb={0}
+                      container
+                      justifyContent="center"
+                    >
+                      <Grid item xs={12} md={6}>
+                        {subContent.image.imageUrl && (
+                          <>
+                            <Card>
+                              <CardMedia
+                                sx={{ p: 0, m: 0 }}
+                                component="img"
+                                image={subContent.image.imageUrl}
+                                alt={product.name}
+                              />
+                            </Card>
+                            <CardContent sx={{ textAlign: "center", pt: 1 }}>
+                              <Typography variant="caption">
+                                {subContent.title}
+                              </Typography>
+                            </CardContent>
+                          </>
+                        )}
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <Box display="flex" alignItems="center" height="100%">
+                          <CardContent>
+                            <Typography
+                              variant="body1"
+                              sx={{ textAlign: "justify" }}
+                            >
+                              {subContent.content1}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              sx={{ textAlign: "justify" }}
+                            >
+                              {subContent.content2}
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              sx={{ textAlign: "justify" }}
+                            >
+                              {subContent.content3}
                             </Typography>
                           </CardContent>
-                        </>
-                      )}
+                        </Box>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Box display="flex" alignItems="center" height="100%">
-                        <CardContent>
-                          <Typography
-                            variant="body1"
-                            sx={{ textAlign: "justify" }}
-                          >
-                            {subContent.content1}
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            sx={{ textAlign: "justify" }}
-                          >
-                            {subContent.content2}
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            sx={{ textAlign: "justify" }}
-                          >
-                            {subContent.content3}
-                          </Typography>
-                        </CardContent>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                ))}
-              </Card>
+                  ))}
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </>
-      )}
-      <Grid container spacing={4} mt={5}>
-        <Grid item xs={12}>
-          <Divider />
+          </>
+        )}
+        <Grid container spacing={4} mt={5}>
+          <Grid item xs={12}>
+            <Divider />
 
-          <Typography variant="h3" mb={3}>
-            Sản phẩm tương tự
-          </Typography>
-          <Grid container spacing={3}>
-            {store.getState().productReducer.list.map((product, index) => (
-              <Grid item xs={6} sm={6} md={3} key={index}>
-                <Link
-                  to={`/product-detail/${product.id}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
-                    <CardMedia
-                      sx={{ p: 0, m: 0, borderRadius: 0 }}
-                      component="img"
-                      image={product.avatar.imageUrl}
-                      alt={product.name}
-                    />
-                    <MDBox mt={1} mx={2}>
-                      <MDTypography
-                        variant="button"
-                        fontWeight="regular"
-                        color="red"
-                        textTransform="capitalize"
-                      >
-                        {formatter.format(product.currentPrice)}
-                      </MDTypography>
-                      <MDBox mb={1}>
-                        <TruncatedTypography
-                          component={Link}
-                          // to={"asdasd"}
-                          variant="h5"
+            <Typography variant="h3" mb={3}>
+              Sản phẩm tương tự
+            </Typography>
+            <Grid container spacing={2}>
+              {store.getState().productReducer.list.map((product, index) => (
+                <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
+                  <Link
+                    to={`/product-detail/${product.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
+                      <CardMedia
+                        sx={{
+                          height: {
+                            xs: "100px",
+                            sm: "160px",
+                            md: "160x",
+                            lg: "230px",
+                          },
+                          objectFit: "cover",
+                        }}
+                        component="img"
+                        image={product.avatar.imageUrl}
+                        alt={product.name}
+                      />
+                      <MDBox mt={1} mx={2}>
+                        <MDTypography
+                          variant="button"
+                          fontWeight="regular"
+                          color="text"
                           textTransform="capitalize"
                         >
-                          {product.name}
-                        </TruncatedTypography>
+                          {formatter.format(product.currentPrice)}
+                        </MDTypography>
+                        <MDBox mb={1}>
+                          <TruncatedTypography
+                            component={Link}
+                            // to={"asdasd"}
+                            variant="h5"
+                            textTransform="capitalize"
+                          >
+                            {product.name}
+                          </TruncatedTypography>
+                        </MDBox>
+                        <MDBox mb={3} lineHeight={0}>
+                          <MultiLineEllipsis
+                            variant="button"
+                            fontWeight="light"
+                            color="text"
+                          >
+                            {product.description}
+                          </MultiLineEllipsis>
+                        </MDBox>
                       </MDBox>
-                      <MDBox mb={3} lineHeight={0}>
-                        <MultiLineEllipsis
-                          variant="button"
-                          fontWeight="light"
-                          color="text"
-                        >
-                          {product.description}
-                        </MultiLineEllipsis>
-                      </MDBox>
-                    </MDBox>
-                  </Card>
-                </Link>
-                {/* <MDBox display="flex">{renderAuthors}</MDBox> */}
-              </Grid>
-            ))}
+                    </Card>
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      {renderSuccessSB}
+        {renderSuccessSB}
+      </Container>
     </DefaultLayout>
   );
 }

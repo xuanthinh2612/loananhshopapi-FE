@@ -95,7 +95,7 @@ function LoginForm() {
             const token = "Bearer " + response.accessToken;
             const role = response.role;
             storeToken(token);
-            saveLoggedInUser(username, role);
+            saveLoggedInUser(userInfo.email, role);
             if (role === "ROLE_ADMIN") {
               navigate(configs.routes.adminDashboard);
             } else {

@@ -6,7 +6,7 @@
 //   isUserLoggedIn,
 // } from "service/authService";
 
-// function Navbar() {
+// function AdminNavbar() {
 //   const navigate = useNavigate();
 //   const isAuth = isUserLoggedIn();
 //   function handleLogout() {
@@ -21,19 +21,13 @@
 //             className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
 //             style={{ "--bs-scroll-height": "100px" }}
 //           >
+//             <li className="nav-item mx-5"></li>
 //             <li className="nav-item mx-5">
-//               <NavLink to={configs.routes.home} className="nav-link">
-//                 {home}
-//               </NavLink>
+//               <NavLink className="nav-link">{home}</NavLink>
 //             </li>
 //             <li className="nav-item mx-5">
 //               <NavLink to={configs.routes.studentList} className="nav-link">
 //                 {group}
-//               </NavLink>
-//             </li>
-//             <li className="nav-item mx-5">
-//               <NavLink to={configs.routes.classList} className="nav-link">
-//                 {school}
 //               </NavLink>
 //             </li>
 //             {!isAuth && (
@@ -81,4 +75,4 @@
 //   );
 // }
 
-// export default Navbar;
+// export default AdminNavbar;

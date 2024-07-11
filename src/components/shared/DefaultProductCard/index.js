@@ -76,6 +76,12 @@ function DefaultProductCard({
           component="img"
           title={title}
           sx={{
+            height: {
+              xs: "100px",
+              sm: "160px",
+              md: "160x",
+              lg: "160px",
+            },
             maxWidth: "100%",
             margin: 0,
             boxShadow: ({ boxShadows: { md } }) => md,

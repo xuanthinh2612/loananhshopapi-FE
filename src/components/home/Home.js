@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -29,7 +14,7 @@ import DefaultLayout from "layouts/defaultLayout";
 // use for reducer
 import { getListProductAction } from "actions/productActions";
 import store from "store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 // use helper
@@ -43,102 +28,60 @@ import MultiLineEllipsis from "components/shared/MultiLineEllipsis";
 
 function Home(props) {
   const navigate = useNavigate();
+  const [newProducts, setNewProducts] = useState([]);
+  const [normalPros, setNormalPros] = useState([]);
+  const [secondHandPros, setSecondHandPros] = useState([]);
+
+  const fetchNewProduct = async () => {
+    await store.dispatch(getListProductAction());
+    setNewProducts(store.getState().productReducer.list);
+  };
+
+  const fetchNormalPro = async () => {
+    await store.dispatch(getListProductAction());
+    setNewProducts(store.getState().productReducer.list);
+  };
+
+  const fetchSecondHandPro = async () => {
+    await store.dispatch(getListProductAction());
+    setNewProducts(store.getState().productReducer.list);
+  };
 
   useEffect(() => {
-    store.dispatch(getListProductAction());
+    fetchNewProduct();
   }, []);
 
   return (
     <DefaultLayout>
-      <Header>
-        <MDBox pt={2} px={2} lineHeight={1.25}>
-          <MDTypography variant="h6" fontWeight="medium">
-            Mỹ Phẩm
-          </MDTypography>
-          <MDBox mb={1}>
-            <MDTypography variant="button" color="text">
-              Architects design houses
-            </MDTypography>
-          </MDBox>
-          <Divider />
-        </MDBox>
-        <MDBox mt={2} p={2}>
-          <Grid container spacing={6}>
-            {props.listProduct &&
-              props.listProduct.map((product) => {
-                return (
-                  <Grid item xs={6} md={6} xl={3}>
-                    <DefaultProjectCard
-                      image={product.avatar.imageUrl}
-                      label={formatter.format(product.currentPrice)}
-                      title={product.name}
-                      description={product.description}
-                      action={{
-                        type: "internal",
-                        route: `/product-detail/${product.id}`,
-                        color: "info",
-                        label: "Xem Chi Tiết",
-                      }}
-                    />
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </MDBox>
-
-        <MDBox pt={2} px={2} lineHeight={1.25}>
-          {/* <Divider /> */}
-
-          <MDTypography variant="h4" fontWeight="medium">
-            Thực phẩm chức năng
-          </MDTypography>
-          <MDBox mb={1}>
-            <MDTypography variant="button" color="text">
-              Hàng chính hãng từ những thương hiệu hàng đầu
-            </MDTypography>
-          </MDBox>
-          <Divider />
-        </MDBox>
-        <MDBox mt={2} p={2}>
-          <Grid container spacing={6}>
-            {props.listProduct &&
-              props.listProduct.map((product) => {
-                return (
-                  <Grid item xs={6} md={6} xl={3}>
-                    <DefaultProjectCard
-                      image={product.avatar.imageUrl}
-                      label={formatter.format(product.currentPrice)}
-                      title={product.name}
-                      description={product.description}
-                      action={{
-                        type: "internal",
-                        route: `/product-detail/${product.id}`,
-                        color: "info",
-                        label: "Xem Chi Tiết",
-                      }}
-                    />
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </MDBox>
-        <Grid container spacing={4} mt={5}>
-          <Grid item xs={12}>
-            <Divider />
-
-            <Typography variant="h3" mb={3}>
-              Sản phẩm tương tự
-            </Typography>
-            <Grid container spacing={3}>
-              {store.getState().productReducer.list.map((product, index) => (
-                <Grid item xs={6} sm={6} md={3} key={index}>
+      <Header />
+      <MDBox pt={2} lineHeight={1.25}>
+        <MDTypography variant="h4" fontWeight="medium">
+          Sản phẩm mới về
+        </MDTypography>
+        <MDBox mb={1}></MDBox>
+        <Divider />
+      </MDBox>
+      <Grid container spacing={4} mt={2}>
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            {newProducts &&
+              newProducts.map((product, index) => (
+                <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
                   <Link
                     to={`/product-detail/${product.id}`}
                     style={{ textDecoration: "none" }}
                   >
                     <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
                       <CardMedia
-                        sx={{ p: 0, m: 0, borderRadius: 0 }}
+                        sx={{
+                          height: {
+                            xs: "100px",
+                            sm: "160px",
+                            md: "160x",
+                            lg: "230px",
+                          },
+                          objectFit: "cover",
+                        }}
                         component="img"
                         image={product.avatar.imageUrl}
                         alt={product.name}
@@ -150,12 +93,10 @@ function Home(props) {
                           color="text"
                           textTransform="capitalize"
                         >
-                          {product.currentPrice}
+                          {formatter.format(product.currentPrice)}
                         </MDTypography>
                         <MDBox mb={1}>
                           <TruncatedTypography
-                            component={Link}
-                            // to={"asdasd"}
                             variant="h5"
                             textTransform="capitalize"
                           >
@@ -174,13 +115,144 @@ function Home(props) {
                       </MDBox>
                     </Card>
                   </Link>
-                  {/* <MDBox display="flex">{renderAuthors}</MDBox> */}
                 </Grid>
               ))}
-            </Grid>
           </Grid>
         </Grid>
-      </Header>
+      </Grid>
+
+      <MDBox pt={5} lineHeight={1.25}>
+        <MDTypography variant="h4" fontWeight="medium">
+          Thực phẩm chức năng và mỹ phẩm
+        </MDTypography>
+        <Divider />
+      </MDBox>
+      <Grid container spacing={4} mt={2}>
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            {store.getState().productReducer.list.map((product, index) => (
+              <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
+                <Link
+                  to={`/product-detail/${product.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
+                    <CardMedia
+                      sx={{
+                        height: {
+                          xs: "100px",
+                          sm: "160px",
+                          md: "160x",
+                          lg: "230px",
+                        },
+                        objectFit: "cover",
+                      }}
+                      component="img"
+                      image={product.avatar.imageUrl}
+                      alt={product.name}
+                    />
+                    <MDBox mt={1} mx={2}>
+                      <MDTypography
+                        variant="button"
+                        fontWeight="regular"
+                        color="text"
+                        textTransform="capitalize"
+                      >
+                        {formatter.format(product.currentPrice)}
+                      </MDTypography>
+                      <MDBox mb={1}>
+                        <TruncatedTypography
+                          component={Link}
+                          // to={"asdasd"}
+                          variant="h5"
+                          textTransform="capitalize"
+                        >
+                          {product.name}
+                        </TruncatedTypography>
+                      </MDBox>
+                      <MDBox mb={3} lineHeight={0}>
+                        <MultiLineEllipsis
+                          variant="button"
+                          fontWeight="light"
+                          color="text"
+                        >
+                          {product.description}
+                        </MultiLineEllipsis>
+                      </MDBox>
+                    </MDBox>
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      </Grid>
+      <MDBox pt={5} lineHeight={1.25}>
+        <MDTypography variant="h4" fontWeight="medium">
+          Đỗ Cũ Nhật bãi
+        </MDTypography>
+        <Divider />
+      </MDBox>
+      <Grid container spacing={4} mt={2}>
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            {store.getState().productReducer.list.map((product, index) => (
+              <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
+                <Link
+                  to={`/product-detail/${product.id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
+                    <CardMedia
+                      sx={{
+                        height: {
+                          xs: "100px",
+                          sm: "160px",
+                          md: "160x",
+                          lg: "230px",
+                        },
+                        objectFit: "cover",
+                      }}
+                      component="img"
+                      image={product.avatar.imageUrl}
+                      alt={product.name}
+                    />
+                    <MDBox mt={1} mx={2}>
+                      <MDTypography
+                        variant="button"
+                        fontWeight="regular"
+                        color="text"
+                        textTransform="capitalize"
+                      >
+                        {formatter.format(product.currentPrice)}
+                      </MDTypography>
+                      <MDBox mb={1}>
+                        <TruncatedTypography
+                          component={Link}
+                          // to={"asdasd"}
+                          variant="h5"
+                          textTransform="capitalize"
+                        >
+                          {product.name}
+                        </TruncatedTypography>
+                      </MDBox>
+                      <MDBox mb={3} lineHeight={0}>
+                        <MultiLineEllipsis
+                          variant="button"
+                          fontWeight="light"
+                          color="text"
+                        >
+                          {product.description}
+                        </MultiLineEllipsis>
+                      </MDBox>
+                    </MDBox>
+                  </Card>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      </Grid>
     </DefaultLayout>
   );
 }

@@ -23,6 +23,8 @@ import UserManagementPage from "components/admin/UserManagementPage";
 import CategoryListPage from "components/admin/CategoryListPage";
 import EditCategoryPage from "components/admin/EditCategoryPage/EditCategoryPage";
 import BlogManagement from "components/admin/BlogManagement/BlogManagement";
+import Blogs from "components/Blogs/Blogs";
+import BlogDetails from "components/BlogDetails";
 
 const routes = [
   {
@@ -57,7 +59,16 @@ const routes = [
   { path: configs.routes.categoryEdit, element: EditCategoryPage },
 
   { path: configs.routes.userManagement, element: UserManagementPage },
-  { path: configs.routes.blogsManagement, element: BlogManagement },
+  {
+    path: configs.routes.blogsManagement,
+    element: BlogManagement,
+  },
+  { path: configs.routes.blogs, element: Blogs, notRequireAuth: true },
+  {
+    path: configs.routes.blogDetails,
+    element: BlogDetails,
+    notRequireAuth: true,
+  },
 ];
 
 export default routes;

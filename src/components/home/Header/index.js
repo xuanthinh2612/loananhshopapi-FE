@@ -71,7 +71,7 @@ function Header({ children }) {
         alignItems="center"
         position="relative"
         minHeight="18.75rem"
-        // borderRadius="xl"
+        borderRadius="xl"
         sx={{
           backgroundImage: ({
             functions: { rgba, linearGradient },
@@ -84,11 +84,9 @@ function Header({ children }) {
           backgroundSize: "cover",
           backgroundPosition: "50%",
           overflow: "hidden",
-          mt: -5,
-          mx: -18,
         }}
       />
-      <Grid container spacing={4} justifyContent="center">
+      {/* <Grid container spacing={4} justifyContent="center">
         <Grid item xs={12} md={12} lg={12} xl={12}>
           <Card
             sx={{
@@ -100,9 +98,14 @@ function Header({ children }) {
             }}
           >
             <Grid container spacing={3} alignItems="center">
-              {/* <Grid item>
-            <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />
-          </Grid> */}
+              <Grid item>
+                <MDAvatar
+                  src={burceMars}
+                  alt="profile-image"
+                  size="xl"
+                  shadow="sm"
+                />
+              </Grid>
               <Grid item>
                 <MDBox height="100%" mt={0.5} lineHeight={1}>
                   <MDTypography variant="h5" fontWeight="medium">
@@ -152,10 +155,9 @@ function Header({ children }) {
                 </AppBar>
               </Grid>
             </Grid>
-            {children}
           </Card>
         </Grid>
-      </Grid>
+      </Grid> */}
     </MDBox>
   );
 }
