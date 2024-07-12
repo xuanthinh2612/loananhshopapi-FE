@@ -25,6 +25,7 @@ import Header from "./Header";
 import { Card, Typography, CardMedia, Divider } from "@mui/material";
 import TruncatedTypography from "components/shared/TruncatedTypography";
 import MultiLineEllipsis from "components/shared/MultiLineEllipsis";
+import MDInput from "components/shared/MDInput";
 
 function Home(props) {
   const navigate = useNavigate();
@@ -55,10 +56,14 @@ function Home(props) {
     <DefaultLayout>
       <Header />
       <MDBox pt={2} lineHeight={1.25}>
-        <MDTypography variant="h4" fontWeight="medium">
+        <MDTypography variant="h5" fontWeight="medium">
           Sản phẩm mới về
         </MDTypography>
-        <MDBox mb={1}></MDBox>
+        <MDBox mb={1}>
+          <MDBox pr={1} mx={0} size="small">
+            <MDInput label="Tìm kiếm" />
+          </MDBox>
+        </MDBox>
         <Divider />
       </MDBox>
       <Grid container spacing={4} mt={2}>
@@ -97,7 +102,7 @@ function Home(props) {
                         </MDTypography>
                         <MDBox mb={1}>
                           <TruncatedTypography
-                            variant="h5"
+                            variant="body"
                             textTransform="capitalize"
                           >
                             {product.name}
@@ -122,7 +127,7 @@ function Home(props) {
       </Grid>
 
       <MDBox pt={5} lineHeight={1.25}>
-        <MDTypography variant="h4" fontWeight="medium">
+        <MDTypography variant="h5" fontWeight="medium">
           Thực phẩm chức năng và mỹ phẩm
         </MDTypography>
         <Divider />
@@ -162,9 +167,7 @@ function Home(props) {
                       </MDTypography>
                       <MDBox mb={1}>
                         <TruncatedTypography
-                          component={Link}
-                          // to={"asdasd"}
-                          variant="h5"
+                          variant="body"
                           textTransform="capitalize"
                         >
                           {product.name}
@@ -188,7 +191,7 @@ function Home(props) {
         </Grid>
       </Grid>
       <MDBox pt={5} lineHeight={1.25}>
-        <MDTypography variant="h4" fontWeight="medium">
+        <MDTypography variant="h5" fontWeight="medium">
           Đỗ Cũ Nhật bãi
         </MDTypography>
         <Divider />
@@ -228,9 +231,7 @@ function Home(props) {
                       </MDTypography>
                       <MDBox mb={1}>
                         <TruncatedTypography
-                          component={Link}
-                          // to={"asdasd"}
-                          variant="h5"
+                          variant="body"
                           textTransform="capitalize"
                         >
                           {product.name}

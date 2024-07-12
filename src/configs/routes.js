@@ -13,7 +13,7 @@ const routes = {
   productListMng: "/product-management",
   newProduct: "/new-product",
   editProduct: "/edit-product/:id",
-  order: "/order",
+  orders: "/orders",
   aboutUs: "/about",
   newCategory: "/new-category",
   categories: "/categories",

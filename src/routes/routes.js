@@ -34,7 +34,7 @@ const routes = [
   },
 
   { path: configs.routes.aboutUs, element: AboutPage, notRequireAuth: true },
-  { path: configs.routes.order, element: OrderPage, notRequireAuth: true },
+  { path: configs.routes.orders, element: OrderPage, notRequireAuth: true },
   { path: configs.routes.newProduct, element: NewProductPage },
   { path: configs.routes.editProduct, element: EditProductPage },
   { path: configs.routes.productListMng, element: ProductManagement },

@@ -43,10 +43,11 @@ import {
   changeCartItem,
   changeNotificationItem,
 } from "context";
+import configs from "configs";
 
 function ProductDetail(props) {
   const [controller, dispatch] = useMaterialUIController();
-  const { NotificationItem, shoppingCartItem } = controller;
+  const { NotificationItem, shoppingCartItems } = controller;
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [successSB, setSuccessSB] = useState(false);
 
@@ -61,11 +62,23 @@ function ProductDetail(props) {
   const product = props.product;
 
   const handleClickBuyNow = (e) => {
-    navigate("/order");
+    handleClickAddToCart();
+    navigate(configs.routes.orders);
   };
 
   const handleClickAddToCart = () => {
-    changeCartItem(dispatch, shoppingCartItem + 1);
+    for (var i = 0; i < shoppingCartItems.length; i++) {
+      if (shoppingCartItems[i].product.id === product.id) {
+        shoppingCartItems[i].number += orderQuantity;
+        openSuccessSB();
+        return;
+      }
+    }
+
+    changeCartItem(dispatch, [
+      ...shoppingCartItems,
+      { product: product, number: orderQuantity },
+    ]);
     openSuccessSB();
   };
 
@@ -116,7 +129,7 @@ function ProductDetail(props) {
         {product.id && (
           <>
             <Grid container spacing={4}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={12} md={7} lg={7}>
                 <Card p={0} m={0}>
                   <CardMedia
                     sx={{ p: 0, m: 0 }}
@@ -126,21 +139,21 @@ function ProductDetail(props) {
                   />
                 </Card>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={12} md={5} lg={5}>
                 <Box
                   display="flex"
                   flexDirection="column"
                   justifyContent="center"
                   height="100%"
                 >
-                  <Typography variant="h2">{product.name}</Typography>
-                  <Typography variant="h4" color={"primary"}>
+                  <Typography variant="h5">{product.name}</Typography>
+                  <Typography variant="text" color={"primary"}>
                     {formatter.format(product.currentPrice)}
                   </Typography>
                   <Typography variant="subtitle1">
                     Danh Mục: {product.category.name}
                   </Typography>
-                  <Typography variant="body1">{product.description}</Typography>
+                  <Typography variant="body2">{product.description}</Typography>
                   <MDBox mt={3} mb={2}>
                     <Grid container spacing={2}>
                       <Grid item xs={6} sm={4}>
@@ -218,7 +231,7 @@ function ProductDetail(props) {
                       color="success"
                       onClick={(e) => handleClickBuyNow(e)}
                     >
-                      &nbsp;Mua Ngay
+                      Mua Ngay&nbsp;&nbsp; {<Icon>local_mall</Icon>}
                     </MDButton>
                     <MDButton
                       variant="gradient"
@@ -227,8 +240,7 @@ function ProductDetail(props) {
                       color="warning"
                       onClick={handleClickAddToCart}
                     >
-                      Thêm vào giỏ hàng&nbsp;&nbsp;
-                      {<Icon>shopping_cart</Icon>}
+                      Thêm vào giỏ hàng&nbsp;&nbsp; {<Icon>shopping_cart</Icon>}
                     </MDButton>
                   </MDBox>
                 </Box>
@@ -271,7 +283,7 @@ function ProductDetail(props) {
                         <Box display="flex" alignItems="center" height="100%">
                           <CardContent>
                             <Typography
-                              variant="body1"
+                              variant="body2"
                               sx={{ textAlign: "justify" }}
                             >
                               {subContent.content1}

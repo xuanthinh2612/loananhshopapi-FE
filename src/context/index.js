@@ -1,23 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-/**
-  This file is used for controlling the global states of the components,
-  you can customize the states for the different components here.
-*/
-
 import { createContext, useContext, useReducer, useMemo } from "react";
 
 // prop-types is a library for typechecking of props
@@ -63,7 +43,7 @@ function reducer(state, action) {
       return { ...state, darkMode: action.value };
     }
     case "SHOPPING_CART_ITEM": {
-      return { ...state, shoppingCartItem: action.value };
+      return { ...state, shoppingCartItems: action.value };
     }
     case "NOTIFICATION_ITEM": {
       return { ...state, NotificationItemCount: action.value };
@@ -87,7 +67,7 @@ function MaterialUIControllerProvider({ children }) {
     direction: "ltr",
     layout: "dashboard",
     darkMode: false,
-    shoppingCartItem: 0,
+    shoppingCartItems: [], // {product: xx, number: xx}
     NotificationItemCount: 0,
   };
 

@@ -17,7 +17,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DefaultLayout from "layouts/defaultLayout";
 import { formatter } from "utils/helper";
 import store from "store";
@@ -27,10 +27,12 @@ import ConfirmModal from "components/shared/ConfirmModal";
 import MDSnackbar from "components/shared/MDSnackbar";
 import MDTypography from "components/shared/MDTypography";
 import MDAlert from "components/shared/MDAlert";
-
+import { useMaterialUIController } from "context";
+import { isUserLoggedIn } from "service/authService";
+import { changeCartItem } from "context";
 function OrderPage() {
   const location = useLocation();
-  const product = store.getState().productReducer.item;
+  // const product = store.getState().productReducer.item;
   const [isModalOpen, setModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [nameError, setNameError] = useState(false);
@@ -44,6 +46,9 @@ function OrderPage() {
     phoneNumber: "",
     totalAmount: 0,
   });
+
+  const [controller, dispatch] = useMaterialUIController();
+  const { shoppingCartItems } = controller;
 
   const handleOpenModal = (index) => {
     setDeleteIndex(index);
@@ -61,12 +66,9 @@ function OrderPage() {
     updateTotalAmount();
   };
 
-  // example product list
-  const products = [product, product, product];
-
   const [orderDetails, setOrderDetails] = useState(
-    products.map((product) => {
-      return { ...product, quantity: 1 };
+    shoppingCartItems.map((item) => {
+      return { ...item.product, quantity: item.number };
     })
   );
 
@@ -144,13 +146,15 @@ function OrderPage() {
       setValidatedResult(false);
     } else {
       setValidatedResult(true);
+      // reset cart items
+      changeCartItem(dispatch, []);
     }
   };
 
   useEffect(() => {
-    if (!product.id) {
-      // Redirect back to product list or handle the case where product details are not available
-    }
+    // if (!product.id) {
+    // Redirect back to product list or handle the case where product details are not available
+    // }
     updateTotalAmount();
   }, [orderDetails]);
 
@@ -182,6 +186,25 @@ function OrderPage() {
     </MDTypography>
   );
 
+  if (orderDetails.length <= 0) {
+    return (
+      <DefaultLayout>
+        <Container>
+          <Typography variant="h5" gutterBottom>
+            Bạn không có sản phẩm nào trong giỏ hàng!
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            Vui lòng quay lại{" "}
+            <Link to="/" style={{ textDecoration: "none" }} color="text">
+              trang chủ loananhshop.com
+            </Link>
+          </Typography>
+          <Divider />
+        </Container>
+      </DefaultLayout>
+    );
+  }
+
   return (
     <DefaultLayout>
       <Container>
@@ -205,6 +228,8 @@ function OrderPage() {
           <Grid item xs={12} md={8}>
             <Card sx={{ mb: 2 }}>
               <Grid container spacing={2}>
+                {!orderDetails.length > 0 && <MDBox></MDBox>}
+
                 {orderDetails &&
                   orderDetails.map((orderDetail, index) => (
                     <React.Fragment key={index}>
@@ -432,42 +457,44 @@ function OrderPage() {
                 </MDBox>
               </CardContent>
             </Card>
-            <Card sx={{ mt: 2 }}>
-              <CardContent>
-                <Typography variant="h5">Bạn chưa đăng nhập</Typography>
+            {!isUserLoggedIn && (
+              <Card sx={{ mt: 2 }}>
+                <CardContent>
+                  <Typography variant="h5">Bạn chưa đăng nhập</Typography>
 
-                <MDBox
-                  mb={1}
-                  mt={3}
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <MDButton
-                    fullWidth
-                    sx={{ mr: 1 }}
-                    variant="gradient"
-                    color="info"
+                  <MDBox
+                    mb={1}
+                    mt={3}
+                    display="flex"
+                    justifyContent="space-between"
                   >
-                    &nbsp;Đăng nhập
-                  </MDButton>
-                </MDBox>
-                <MDBox
-                  mb={1}
-                  mt={3}
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <MDButton
-                    fullWidth
-                    sx={{ mr: 1 }}
-                    variant="gradient"
-                    color="success"
+                    <MDButton
+                      fullWidth
+                      sx={{ mr: 1 }}
+                      variant="gradient"
+                      color="info"
+                    >
+                      &nbsp;Đăng nhập
+                    </MDButton>
+                  </MDBox>
+                  <MDBox
+                    mb={1}
+                    mt={3}
+                    display="flex"
+                    justifyContent="space-between"
                   >
-                    &nbsp;Đăng ký
-                  </MDButton>
-                </MDBox>
-              </CardContent>
-            </Card>
+                    <MDButton
+                      fullWidth
+                      sx={{ mr: 1 }}
+                      variant="gradient"
+                      color="success"
+                    >
+                      &nbsp;Đăng ký
+                    </MDButton>
+                  </MDBox>
+                </CardContent>
+              </Card>
+            )}
           </Grid>
         </Grid>
       </Container>

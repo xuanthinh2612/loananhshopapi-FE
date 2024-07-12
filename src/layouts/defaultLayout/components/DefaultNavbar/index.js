@@ -51,47 +51,29 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
   const {
     miniSidenav,
     transparentNavbar,
-    fixedNavbar,
     darkMode,
-    shoppingCartItem,
+    shoppingCartItems,
     NotificationItemCount,
   } = controller;
+
   const [openMenu, setOpenMenu] = useState(false);
   const [openAccountOptions, setOpenAccountOptions] = useState(false);
-
-  // logout
-  function handleLogout() {
-    cleanUpSessionAndStorageData();
-    navigate("/login");
-  }
-
-  // useEffect(() => {
-  // A function that sets the transparent state of the navbar.
-  // function handleTransparentNavbar() {
-  //   setTransparentNavbar(
-  //     dispatch,
-  //     (fixedNavbar && window.scrollY === 0) || !fixedNavbar
-  //   );
-  // }
-
-  /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
-  // window.addEventListener("scroll", handleTransparentNavbar);
-
-  // Call the handleTransparentNavbar function to set the state with the initial value.
-  // handleTransparentNavbar();
-
-  // Remove event listener on cleanup
-  // return () => window.removeEventListener("scroll", handleTransparentNavbar);
-  // }, [dispatch, fixedNavbar]);
+  const [openCartOptions, setOpenCartOptions] = useState(false);
 
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const handleOpenAccountOptions = (event) =>
     setOpenAccountOptions(event.currentTarget);
   const handleCloseAccountOptions = () => setOpenAccountOptions(false);
+  const handleOpenCartOptions = (event) =>
+    setOpenCartOptions(event.currentTarget);
+  const handleCloseCartOptions = () => setOpenCartOptions(false);
+
+  // logout
+  function handleLogout() {
+    cleanUpSessionAndStorageData();
+    navigate("/login");
+  }
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -106,15 +88,11 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
+      <NotificationItem
+        icon={<Icon>email</Icon>}
+        title="Hiện không có thông báo mới"
+      />
       <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem
-        icon={<Icon>podcasts</Icon>}
-        title="Manage Podcast sessions"
-      />
-      <NotificationItem
-        icon={<Icon>shopping_cart</Icon>}
-        title="Payment successfully completed"
-      />
     </Menu>
   );
 
@@ -154,37 +132,24 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
 
   const renderCartOptions = () => (
     <Menu
-      anchorEl={openAccountOptions}
+      anchorEl={openCartOptions}
       anchorReference={null}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
-      open={Boolean(openAccountOptions)}
-      onClose={handleCloseAccountOptions}
+      open={Boolean(openCartOptions)}
+      onClose={handleCloseCartOptions}
       sx={{ mt: 2 }}
     >
-      {isSignedIn ? (
-        <>
-          <NotificationItem
-            onClick={handleLogout}
-            icon={<Icon>logout</Icon>}
-            title="Đăng Xuất"
-          />
-          <NotificationItem
-            icon={<Icon>settings</Icon>}
-            title="Thông tin tài khoản"
-          />
-        </>
-      ) : (
-        <NotificationItem
-          onClick={() => navigate("/login")}
-          icon={<Icon>login</Icon>}
-          title="Đăng Nhập"
-        />
-      )}
+      <NotificationItem
+        icon={<Icon>shopping_cart</Icon>}
+        title="Chi tiết giỏ hàng"
+        onClick={() => navigate(configs.routes.orders)}
+      />
     </Menu>
   );
+
   // Styles for the navbar icons
   const iconsStyle = ({
     palette: { dark, white, text },
@@ -270,16 +235,6 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
                 {renderAccountOptions()}
-                <Badge badgeContent={shoppingCartItem} color="primary">
-                  <IconButton
-                    size="small"
-                    disableRipple
-                    color="inherit"
-                    sx={navbarIconButton}
-                  >
-                    <Icon sx={iconsStyle}>shopping_cart</Icon>
-                  </IconButton>
-                </Badge>
                 <Badge badgeContent={NotificationItemCount} color="primary">
                   <IconButton
                     size="small"
@@ -310,6 +265,18 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                 </MDBox>
               </>
             )}
+            <Badge badgeContent={shoppingCartItems.length} color="primary">
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleOpenCartOptions}
+              >
+                <Icon sx={iconsStyle}>shopping_cart</Icon>
+              </IconButton>
+            </Badge>
+            {renderCartOptions()}
           </MDBox>
         )}
       </Toolbar>
