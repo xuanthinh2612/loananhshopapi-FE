@@ -67,7 +67,7 @@ function MaterialUIControllerProvider({ children }) {
     direction: "ltr",
     layout: "dashboard",
     darkMode: false,
-    shoppingCartItems: [], // {product: xx, number: xx}
+    shoppingCartItems: [], // {product: xx, quantity: xx}
     NotificationItemCount: 0,
   };
 

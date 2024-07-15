@@ -28,10 +28,10 @@ import { useMaterialUIController, setTransparentNavbar } from "context";
 
 //======================custom import=========
 import { home } from "assets/icons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import configs from "configs";
-import { Badge } from "@mui/material";
+import { Badge, Box } from "@mui/material";
 //=====================ADD-MORE================
 import {
   cleanUpSessionAndStorageData,
@@ -58,22 +58,23 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [openAccountOptions, setOpenAccountOptions] = useState(false);
-  const [openCartOptions, setOpenCartOptions] = useState(false);
 
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
   const handleOpenAccountOptions = (event) =>
     setOpenAccountOptions(event.currentTarget);
   const handleCloseAccountOptions = () => setOpenAccountOptions(false);
-  const handleOpenCartOptions = (event) =>
-    setOpenCartOptions(event.currentTarget);
-  const handleCloseCartOptions = () => setOpenCartOptions(false);
 
   // logout
   function handleLogout() {
     cleanUpSessionAndStorageData();
-    navigate("/login");
+    navigate(configs.routes.login);
   }
+
+  // go to order page
+  const handleClickCartIcon = () => {
+    navigate(configs.routes.orders);
+  };
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -130,26 +131,6 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
     </Menu>
   );
 
-  const renderCartOptions = () => (
-    <Menu
-      anchorEl={openCartOptions}
-      anchorReference={null}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-      open={Boolean(openCartOptions)}
-      onClose={handleCloseCartOptions}
-      sx={{ mt: 2 }}
-    >
-      <NotificationItem
-        icon={<Icon>shopping_cart</Icon>}
-        title="Chi tiết giỏ hàng"
-        onClick={() => navigate(configs.routes.orders)}
-      />
-    </Menu>
-  );
-
   // Styles for the navbar icons
   const iconsStyle = ({
     palette: { dark, white, text },
@@ -167,75 +148,65 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
   });
 
   return (
-    <AppBar position="relative" color="inherit">
-      <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <MDBox
-          sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
-            p: 2,
-            position: "relative",
-            [breakpoints.up("xl")]: {
-              marginLeft: miniSidenav ? pxToRem(0) : pxToRem(120),
-              marginRight: miniSidenav ? pxToRem(0) : pxToRem(120),
-              transition: transitions.create(["margin-left", "margin-right"], {
-                easing: transitions.easing.easeInOut,
-                duration: transitions.duration.standard,
-              }),
-            },
-          })}
-        >
-          <MDBox lineHeight={1.25}>
-            <NavLink to={configs.routes.home}>
-              <IconButton sx={navbarIconButton} size="small" disableRipple>
-                {home}&nbsp; LoanAnh Shop
-              </IconButton>
-            </NavLink>
-            <NavLink to={configs.routes.blogs}>
-              <IconButton sx={navbarIconButton} size="small" disableRipple>
-                Blogs
-              </IconButton>
-            </NavLink>
-            <NavLink to={configs.routes.aboutUs}>
-              <IconButton sx={navbarIconButton} size="small" disableRipple>
-                Giới thiệu
-              </IconButton>
-            </NavLink>
-            {isAdmin && (
-              <NavLink to={configs.routes.adminDashboard}>
-                <IconButton size="small" disableRipple color="warning">
-                  ADMIN PAGE
+    <>
+      <AppBar position="relative" color="inherit">
+        <Toolbar sx={(theme) => navbarContainer(theme)}>
+          <MDBox
+            sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
+              p: 2,
+              position: "relative",
+              [breakpoints.up("xl")]: {
+                marginLeft: miniSidenav ? pxToRem(0) : pxToRem(120),
+                marginRight: miniSidenav ? pxToRem(0) : pxToRem(120),
+                transition: transitions.create(
+                  ["margin-left", "margin-right"],
+                  {
+                    easing: transitions.easing.easeInOut,
+                    duration: transitions.duration.standard,
+                  }
+                ),
+              },
+            })}
+          >
+            <MDBox lineHeight={1.25}>
+              <NavLink to={configs.routes.home}>
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  {home}&nbsp; LoanAnh Shop
                 </IconButton>
               </NavLink>
-            )}
-          </MDBox>
-        </MDBox>
-        {isMini ? null : (
-          <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1} mx={0} size="small">
-              <MDInput label="Tìm kiếm" />
-            </MDBox>
-            {isSignedIn ? (
-              <MDBox color={light ? "white" : "inherit"}>
-                <MDTypography
-                  display="inline"
-                  variant="body2"
-                  verticalAlign="middle"
-                >
-                  &nbsp;{getLoggedInUser()}
-                </MDTypography>
-                <IconButton
-                  size="small"
-                  disableRipple
-                  color="inherit"
-                  sx={navbarIconButton}
-                  aria-controls="notification-menu"
-                  aria-haspopup="true"
-                  variant="contained"
-                  onClick={handleOpenAccountOptions}
-                >
-                  <Icon sx={iconsStyle}>account_circle</Icon>
+              <NavLink to={configs.routes.blogs}>
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  Blogs
                 </IconButton>
-                {renderAccountOptions()}
-                <Badge badgeContent={NotificationItemCount} color="primary">
+              </NavLink>
+              <NavLink to={configs.routes.aboutUs}>
+                <IconButton sx={navbarIconButton} size="small" disableRipple>
+                  Giới thiệu
+                </IconButton>
+              </NavLink>
+              {isAdmin && (
+                <NavLink to={configs.routes.adminDashboard}>
+                  <IconButton size="small" disableRipple color="warning">
+                    ADMIN PAGE
+                  </IconButton>
+                </NavLink>
+              )}
+            </MDBox>
+          </MDBox>
+          {isMini ? null : (
+            <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
+              <MDBox pr={1} mx={0} size="small">
+                <MDInput label="Tìm kiếm" />
+              </MDBox>
+              {isSignedIn ? (
+                <MDBox color={light ? "white" : "inherit"}>
+                  <MDTypography
+                    display="inline"
+                    variant="body2"
+                    verticalAlign="middle"
+                  >
+                    &nbsp;{getLoggedInUser()}
+                  </MDTypography>
                   <IconButton
                     size="small"
                     disableRipple
@@ -244,43 +215,90 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
                     aria-controls="notification-menu"
                     aria-haspopup="true"
                     variant="contained"
-                    onClick={handleOpenMenu}
+                    onClick={handleOpenAccountOptions}
                   >
-                    <Icon sx={iconsStyle}>notifications</Icon>
+                    <Icon sx={iconsStyle}>account_circle</Icon>
                   </IconButton>
-                </Badge>
-                {renderMenu()}
-              </MDBox>
-            ) : (
-              <>
-                <MDBox mx={1}>
-                  <MDButton color="warning" onClick={() => navigate("/login")}>
-                    &nbsp;Đăng Nhập<Icon>login</Icon>
-                  </MDButton>
+                  {renderAccountOptions()}
+                  <Badge badgeContent={NotificationItemCount} color="primary">
+                    <IconButton
+                      size="small"
+                      disableRipple
+                      color="inherit"
+                      sx={navbarIconButton}
+                      aria-controls="notification-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      onClick={handleOpenMenu}
+                    >
+                      <Icon sx={iconsStyle}>notifications</Icon>
+                    </IconButton>
+                  </Badge>
+                  {renderMenu()}
                 </MDBox>
-                <MDBox mx={1}>
-                  <MDButton color="success" onClick={() => navigate("/login")}>
-                    &nbsp;Đăng Ký<Icon>login</Icon>
-                  </MDButton>
-                </MDBox>
-              </>
-            )}
-            <Badge badgeContent={shoppingCartItems.length} color="primary">
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleOpenCartOptions}
-              >
-                <Icon sx={iconsStyle}>shopping_cart</Icon>
-              </IconButton>
-            </Badge>
-            {renderCartOptions()}
-          </MDBox>
-        )}
-      </Toolbar>
-    </AppBar>
+              ) : (
+                <>
+                  <MDBox mx={1}>
+                    <MDButton
+                      color="warning"
+                      onClick={() => navigate("/login")}
+                    >
+                      &nbsp;Đăng Nhập<Icon>login</Icon>
+                    </MDButton>
+                  </MDBox>
+                  <MDBox mx={1}>
+                    <MDButton
+                      color="success"
+                      onClick={() => navigate("/login")}
+                    >
+                      &nbsp;Đăng Ký<Icon>login</Icon>
+                    </MDButton>
+                  </MDBox>
+                </>
+              )}
+              <Badge badgeContent={shoppingCartItems.length} color="primary">
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                  onClick={handleClickCartIcon}
+                >
+                  <Icon sx={iconsStyle}>shopping_cart</Icon>
+                </IconButton>
+              </Badge>
+            </MDBox>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      <MDBox
+        justifyContent="center"
+        alignItems="center"
+        color="white"
+        sx={{ background: "#333333", mt: "-2" }}
+        display="flex"
+      >
+        <MDBox
+          color="white"
+          mx={2}
+          component="a"
+          aria-current="page"
+          href="/blogs"
+        >
+          Thực phẩm chức năng
+        </MDBox>
+        <MDBox color="white" mx={2}>
+          Mỹ Phẩm
+        </MDBox>
+        <MDBox color="white" mx={2}>
+          Quần áo
+        </MDBox>
+        <MDBox color="white" mx={2}>
+          Đồ cũ
+        </MDBox>
+      </MDBox>
+    </>
   );
 }
 

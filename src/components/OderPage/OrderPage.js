@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Container,
   Grid,
@@ -17,7 +17,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DefaultLayout from "layouts/defaultLayout";
 import { formatter } from "utils/helper";
 import store from "store";
@@ -30,25 +30,38 @@ import MDAlert from "components/shared/MDAlert";
 import { useMaterialUIController } from "context";
 import { isUserLoggedIn } from "service/authService";
 import { changeCartItem } from "context";
+import { createOrder } from "service/orderService";
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+
 function OrderPage() {
+  const navigate = useNavigate();
   const location = useLocation();
-  // const product = store.getState().productReducer.item;
   const [isModalOpen, setModalOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [nameError, setNameError] = useState(false);
   const [addressError, setAddressError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
   const [validatedResult, setValidatedResult] = useState(true);
+  const [controller, dispatch] = useMaterialUIController();
+  const { shoppingCartItems } = controller;
+  const [orderDetails, setOrderDetails] = useState(shoppingCartItems);
+  const [error, setError] = useState(false);
+
   const [order, setOrder] = useState({
     name: "",
     email: "",
     address: "",
     phoneNumber: "",
     totalAmount: 0,
+    productIds: [], // {productId: xx, number: xx}
   });
-
-  const [controller, dispatch] = useMaterialUIController();
-  const { shoppingCartItems } = controller;
 
   const handleOpenModal = (index) => {
     setDeleteIndex(index);
@@ -64,23 +77,18 @@ function OrderPage() {
     setOrderDetails(orderDetails);
     setModalOpen(false);
     updateTotalAmount();
+    changeCartItem(dispatch, orderDetails);
   };
 
-  const [orderDetails, setOrderDetails] = useState(
-    shoppingCartItems.map((item) => {
-      return { ...item.product, quantity: item.number };
-    })
-  );
-
-  const handleChange = (e) => {
+  const handleChangeOrderInfo = (e) => {
     const { name, value } = e.target;
     setAddressError(false);
     setNameError(false);
     setPhoneNumberError(false);
     setValidatedResult(true);
 
-    setOrder((prevDetails) => ({
-      ...prevDetails,
+    setOrder((prevState) => ({
+      ...prevState,
       [name]: value,
     }));
   };
@@ -89,8 +97,6 @@ function OrderPage() {
     const regex = /^(03|05|07|08|09)\d{8}$/;
     return regex.test(phoneNumber);
   }
-
-  // function validateEmail(email) {}
 
   function isValidName(name) {
     const namePatern = /[0-9!@#$%^&*(),.?":{}|<>/\\]/;
@@ -123,7 +129,7 @@ function OrderPage() {
     setOrder(updatedOrder);
   };
 
-  const handleOrder = () => {
+  const handleSubmitOrder = async () => {
     // check is valid input
     const phoneNumber = order.phoneNumber;
     let hasError = false;
@@ -146,16 +152,40 @@ function OrderPage() {
       setValidatedResult(false);
     } else {
       setValidatedResult(true);
-      // reset cart items
-      changeCartItem(dispatch, []);
+
+      // call api create order
+      const res = await createOrder(order);
+
+      if (res === "success") {
+        // reset cart items
+        changeCartItem(dispatch, []);
+        handleOpen();
+      } else {
+        openError();
+      }
     }
   };
 
+  const updateOrderBeforeSubmit = () => {
+    const updatedOrderProduct = orderDetails.map((item) => {
+      return { productId: item.id, quantity: item.quantity };
+    });
+
+    const newOrder = {
+      ...order,
+      productIds: updatedOrderProduct,
+    };
+
+    setOrder(newOrder);
+  };
+
   useEffect(() => {
-    // if (!product.id) {
-    // Redirect back to product list or handle the case where product details are not available
-    // }
     updateTotalAmount();
+  }, [orderDetails]);
+
+  useMemo(() => {
+    // update cart and order before submit
+    updateOrderBeforeSubmit();
   }, [orderDetails]);
 
   const handleQuantityChange = (index, newQuantity) => {
@@ -168,6 +198,22 @@ function OrderPage() {
       handleOpenModal(index);
     }
   };
+
+  const openError = () => setError(true);
+  const closeError = () => setError(false);
+
+  const renderError = (
+    <MDSnackbar
+      color="error"
+      icon="check"
+      title="Lỗi!"
+      content={`Đã có lỗi xảy ra, vui lòng thực hiện lại.`}
+      open={error}
+      onClose={closeError}
+      close={closeError}
+      bgWhite
+    />
+  );
 
   const alertContent = (lable) => (
     <MDTypography variant="body2" color="white" container>
@@ -186,6 +232,39 @@ function OrderPage() {
     </MDTypography>
   );
 
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/");
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  function PopupAlert() {
+    return (
+      <div>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogContent>
+            <Alert severity="success">
+              <AlertTitle>Đặt hàng thành công!</AlertTitle>
+              Chúng tôi sẽ xử lý đơn hàng sớm nhất.
+              <br />
+              Cám ơn bạn đã tin tưởng sản phẩm do Loan Anh Shop phân phối!
+            </Alert>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+
   if (orderDetails.length <= 0) {
     return (
       <DefaultLayout>
@@ -194,9 +273,9 @@ function OrderPage() {
             Bạn không có sản phẩm nào trong giỏ hàng!
           </Typography>
           <Typography variant="h5" gutterBottom>
-            Vui lòng quay lại{" "}
+            Vui lòng quay lại trang chủ&nbsp;
             <Link to="/" style={{ textDecoration: "none" }} color="text">
-              trang chủ loananhshop.com
+              loananhshop.com
             </Link>
           </Typography>
           <Divider />
@@ -208,6 +287,8 @@ function OrderPage() {
   return (
     <DefaultLayout>
       <Container>
+        {PopupAlert()}
+        {renderError}
         {!validatedResult && (
           <MDAlert
             color="error"
@@ -364,7 +445,7 @@ function OrderPage() {
                           fullWidth
                           variant="gradient"
                           color="warning"
-                          onClick={handleOrder}
+                          onClick={handleSubmitOrder}
                         >
                           &nbsp;Đặt Hàng
                         </MDButton>
@@ -388,7 +469,7 @@ function OrderPage() {
                   variant="outlined"
                   margin="normal"
                   value={order.name}
-                  onChange={handleChange}
+                  onChange={handleChangeOrderInfo}
                 />
                 {nameError && (
                   <Typography color={"red"} variant="subtitle2">
@@ -403,7 +484,7 @@ function OrderPage() {
                   variant="outlined"
                   margin="normal"
                   value={order.address}
-                  onChange={handleChange}
+                  onChange={handleChangeOrderInfo}
                 />
                 {addressError && (
                   <Typography color={"red"} variant="subtitle2">
@@ -418,7 +499,7 @@ function OrderPage() {
                   label="Số điện thoại"
                   variant="outlined"
                   margin="normal"
-                  onChange={handleChange}
+                  onChange={handleChangeOrderInfo}
                   value={order.phoneNumber}
                   sx={{
                     "& input[type=number]": {
@@ -450,7 +531,7 @@ function OrderPage() {
                     sx={{ mr: 1 }}
                     variant="gradient"
                     color="warning"
-                    onClick={handleOrder}
+                    onClick={handleSubmitOrder}
                   >
                     &nbsp;Đặt Hàng
                   </MDButton>

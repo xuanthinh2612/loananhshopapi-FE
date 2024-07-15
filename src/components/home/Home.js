@@ -26,6 +26,7 @@ import { Card, Typography, CardMedia, Divider } from "@mui/material";
 import TruncatedTypography from "components/shared/TruncatedTypography";
 import MultiLineEllipsis from "components/shared/MultiLineEllipsis";
 import MDInput from "components/shared/MDInput";
+import CoverCarousel from "./CoverCarousel";
 
 function Home(props) {
   const navigate = useNavigate();
@@ -54,7 +55,10 @@ function Home(props) {
 
   return (
     <DefaultLayout>
-      <Header />
+      <MDBox>
+        <CoverCarousel></CoverCarousel>
+      </MDBox>
+      {/* <Header /> */}
       <MDBox pt={2} lineHeight={1.25}>
         <MDTypography variant="h5" fontWeight="medium">
           Sản phẩm mới về

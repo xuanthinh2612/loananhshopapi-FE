@@ -68,8 +68,8 @@ function ProductDetail(props) {
 
   const handleClickAddToCart = () => {
     for (var i = 0; i < shoppingCartItems.length; i++) {
-      if (shoppingCartItems[i].product.id === product.id) {
-        shoppingCartItems[i].number += orderQuantity;
+      if (shoppingCartItems[i].id === product.id) {
+        shoppingCartItems[i].quantity += orderQuantity;
         openSuccessSB();
         return;
       }
@@ -77,7 +77,7 @@ function ProductDetail(props) {
 
     changeCartItem(dispatch, [
       ...shoppingCartItems,
-      { product: product, number: orderQuantity },
+      { ...product, quantity: orderQuantity },
     ]);
     openSuccessSB();
   };

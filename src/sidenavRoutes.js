@@ -48,8 +48,6 @@ Coded by www.creative-tim.com
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import NewProductPage from "components/admin/NewProductPage/NewProductPage";
-import ProductManagement from "components/admin/ProductManagement";
 
 const sidenavRoutes = [
   {
