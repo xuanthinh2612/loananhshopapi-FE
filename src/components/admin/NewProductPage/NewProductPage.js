@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
   Grid,
@@ -24,6 +24,9 @@ import { useNavigate } from "react-router-dom";
 import configs from "configs";
 import { createProduct } from "service/productService";
 import MDSnackbar from "components/shared/MDSnackbar";
+
+import * as firebaseService from "service/firebaseService";
+import MDTypography from "components/shared/MDTypography";
 
 const NewProductPage = () => {
   const navigate = useNavigate();
@@ -171,6 +174,51 @@ const NewProductPage = () => {
 
     fetchCategoryList();
   }, []);
+
+  //==========handle upload to firebase====================
+  const [imageUpload, setImageUpload] = useState(null);
+  const [progress, setProgress] = useState(0);
+
+  // handle on image change
+  const handleOnImageChange = (e, index) => {
+    setProgress(0);
+    setImageUpload(e.target.files[0]);
+  };
+
+  // handle when click to select image
+  const handleButtonClick = (e, index) => {
+    // Find the closest parent element with the data-index attribute
+    const parentDiv = e.target.closest(`[data-index="${index}"]`);
+    // Find the input element within the parent element
+    const fileInput = parentDiv.querySelector('input[type="file"]');
+    fileInput.click();
+  };
+
+  // handle when click upload button
+  const uploadFile = async (index) => {
+    if (imageUpload === null) {
+      console.log("Please select an image");
+      return;
+    }
+
+    const uploadToFolderName = "products";
+
+    // upload image
+    const uploadedImageUrl = await firebaseService.uploadImage(
+      imageUpload,
+      uploadToFolderName,
+      setProgress
+    );
+
+    const element = {
+      target: {
+        name: "imageUrl",
+        value: uploadedImageUrl,
+      },
+    };
+    handleSubContentChange(index, element);
+    setImageUpload(null);
+  };
 
   return (
     <AdminLayout>
@@ -390,6 +438,51 @@ const NewProductPage = () => {
                               onChange={(e) => handleSubContentChange(index, e)}
                               fullWidth
                             />
+                          </Grid>
+                          <Grid item xs={12} data-index={index}>
+                            <input
+                              hidden
+                              id={index}
+                              label="Image"
+                              placeholder="Chọn ảnh"
+                              accept="image/png,image/jpeg"
+                              type="file"
+                              onChange={(e) => handleOnImageChange(e, index)}
+                            />
+
+                            <MDButton
+                              type="button"
+                              variant="contained"
+                              color="warning"
+                              onClick={(e) => {
+                                handleButtonClick(e, index);
+                              }}
+                            >
+                              Chọn Ảnh
+                            </MDButton>
+                            {imageUpload && (
+                              <>
+                                <MDButton
+                                  type="button"
+                                  variant="contained"
+                                  color="info"
+                                  onClick={() => {
+                                    uploadFile(index);
+                                  }}
+                                  sx={{ mx: 1 }}
+                                >
+                                  upload ảnh
+                                </MDButton>
+                                <MDTypography>{imageUpload.name}</MDTypography>
+                                <progress
+                                  id="uploader"
+                                  value={progress}
+                                  max="100"
+                                >
+                                  0%
+                                </progress>
+                              </>
+                            )}
                           </Grid>
                         </Grid>
                       </CardContent>

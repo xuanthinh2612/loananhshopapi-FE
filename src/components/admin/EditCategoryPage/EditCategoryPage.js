@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
   Grid,
@@ -16,6 +16,9 @@ import { getCategoryById, updateCategory } from "service/categoryService";
 import MDSnackbar from "components/shared/MDSnackbar";
 import configs from "configs";
 import { saveCategory } from "service/categoryService";
+import MDTypography from "components/shared/MDTypography";
+
+import * as firebaseService from "service/firebaseService";
 
 const EditCategoryPage = () => {
   const navigate = useNavigate();
@@ -94,6 +97,44 @@ const EditCategoryPage = () => {
     }
   };
 
+  //==========handle upload to firebase====================
+  const [imageUpload, setImageUpload] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef(null);
+
+  // handle on image change
+  const handleOnImageChange = (e) => {
+    setProgress(0);
+    setImageUpload(e.target.files[0]);
+  };
+
+  // handle when click to select image
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // handle when click upload button
+  const uploadFile = async () => {
+    if (imageUpload === null) {
+      console.log("Please select an image");
+      return;
+    }
+
+    const uploadToFolderName = "categories";
+
+    // upload image
+    const uploadedImageUrl = await firebaseService.uploadImage(
+      imageUpload,
+      uploadToFolderName,
+      setProgress
+    );
+
+    const newCategoryDetails = { ...categoryDetails };
+    newCategoryDetails.image.imageUrl = uploadedImageUrl;
+    setCategoryDetails(newCategoryDetails);
+    setImageUpload(null);
+  };
+
   return (
     <AdminLayout>
       <Container maxWidth="md">
@@ -152,6 +193,43 @@ const EditCategoryPage = () => {
                     onChange={handleChange}
                     fullWidth
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <input
+                    ref={fileInputRef}
+                    hidden
+                    label="Image"
+                    placeholder="Choose image"
+                    accept="image/png,image/jpeg"
+                    type="file"
+                    onChange={(e) => handleOnImageChange(e)}
+                  />
+
+                  <MDButton
+                    type="button"
+                    variant="contained"
+                    color="warning"
+                    onClick={handleButtonClick}
+                  >
+                    Chọn Ảnh
+                  </MDButton>
+                  {imageUpload && (
+                    <>
+                      <MDButton
+                        type="button"
+                        variant="contained"
+                        color="info"
+                        onClick={uploadFile}
+                        sx={{ mx: 1 }}
+                      >
+                        upload ảnh
+                      </MDButton>
+                      <MDTypography>{imageUpload.name}</MDTypography>
+                      <progress id="uploader" value={progress} max="100">
+                        0%
+                      </progress>
+                    </>
+                  )}
                 </Grid>
               </Grid>
             </CardContent>

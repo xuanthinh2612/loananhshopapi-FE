@@ -283,7 +283,7 @@ function ProductDetail(props) {
                         <Box display="flex" alignItems="center" height="100%">
                           <CardContent>
                             <Typography
-                              variant="body2"
+                              variant="body1"
                               sx={{ textAlign: "justify" }}
                             >
                               {subContent.content1}

@@ -105,10 +105,7 @@ function Home(props) {
                           {formatter.format(product.currentPrice)}
                         </MDTypography>
                         <MDBox mb={1}>
-                          <TruncatedTypography
-                            variant="body"
-                            textTransform="capitalize"
-                          >
+                          <TruncatedTypography variant="body2">
                             {product.name}
                           </TruncatedTypography>
                         </MDBox>
@@ -171,7 +168,7 @@ function Home(props) {
                       </MDTypography>
                       <MDBox mb={1}>
                         <TruncatedTypography
-                          variant="body"
+                          variant="body2"
                           textTransform="capitalize"
                         >
                           {product.name}
@@ -235,7 +232,7 @@ function Home(props) {
                       </MDTypography>
                       <MDBox mb={1}>
                         <TruncatedTypography
-                          variant="body"
+                          variant="body2"
                           textTransform="capitalize"
                         >
                           {product.name}

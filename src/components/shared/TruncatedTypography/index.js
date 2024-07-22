@@ -3,12 +3,15 @@ import { styled } from "@mui/system";
 import { Typography } from "@mui/material";
 
 const TruncatedTypography = styled(Typography)({
-  whiteSpace: "nowrap",
-  overflow: "hidden",
   textOverflow: "ellipsis",
-  width: "100%",
-  display: "inline-block",
-  boxSizing: "border-box",
+  display: "-webkit-box",
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  WebkitLineClamp: 2,
+  lineHeight: "1",
+  minHeight: "2rem", // Adjust based on the line height to ensure space for 3 lines
+  textTransform: "none", // Prevent text from being transformed to uppercase
+  fontWeight: "bold", // Make text bold
 });
 
 export default TruncatedTypography;
