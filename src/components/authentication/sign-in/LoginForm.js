@@ -11,6 +11,8 @@ import firebase from "firebase/compat/app";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css"; // Import FirebaseUI CSS
 
+import * as firebaseService from "service/firebaseService";
+
 //===============================================================
 // @mui material components
 import Card from "@mui/material/Card";
@@ -57,14 +59,8 @@ function LoginForm() {
 
   // for example only using firebaseui
   useEffect(() => {
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: process.env.REACT_APP_API_KEY,
-      authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    };
-
     if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
+      firebase.initializeApp(firebaseService.firebaseConfig);
     }
 
     // Initialize FirebaseUI

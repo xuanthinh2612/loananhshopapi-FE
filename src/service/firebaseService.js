@@ -3,13 +3,16 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
+
+import firebase from "firebase/compat/app";
 
 import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_PROJECT_ID,
@@ -20,7 +23,10 @@ const firebaseConfig = {
 };
 
 export const uploadImage = async (file, targetFolderName, ...rest) => {
-  const app = initializeApp(firebaseConfig);
+  if (!firebase.apps.length) {
+    const app = initializeApp(firebaseConfig);
+  }
+
   const [setProgress] = [...rest];
 
   const storage = getStorage();
@@ -99,4 +105,35 @@ export const uploadImage = async (file, targetFolderName, ...rest) => {
   // uploadTask.cancel();
   // [END storage_manage_uploads_modular]
   // };
+};
+
+export const uploadImageNotStream = async (imageUpload, ...rest) => {
+  const storage = getStorage();
+
+  if (imageUpload === null) {
+    console.log("Please select an image");
+    return;
+  }
+
+  const imageRef = ref(
+    storage,
+    `products/test-${Math.floor(Math.random() * 999999999999)}`
+  );
+  return new Promise((resolve, reject) => {
+    uploadBytes(imageRef, imageUpload)
+      .then((snapshot) => {
+        getDownloadURL(snapshot.ref)
+          .then((url) => {
+            resolve(url);
+          })
+          .catch((error) => {
+            console.log(error.message);
+            reject(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        reject(error);
+      });
+  });
 };
