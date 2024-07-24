@@ -17,7 +17,7 @@ import AdminLayout from "layouts/adminLayout";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { getBlogList, deleteBlog } from "service/blogService";
+import { getBlogListByAdmin, deleteBlog } from "service/blogService";
 import MDSnackbar from "components/shared/MDSnackbar";
 import MDButton from "components/shared/MDButton";
 import ConfirmModal from "components/shared/ConfirmModal";
@@ -32,7 +32,7 @@ const BlogManagement = () => {
   const [selectedId, setSelectedId] = useState();
 
   const fetchBlogs = async () => {
-    const data = await getBlogList();
+    const data = await getBlogListByAdmin();
     console.log(data);
     setBlogs(data);
   };
@@ -56,7 +56,7 @@ const BlogManagement = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`${configs.routes.blogEditWith}/${id}`);
+    navigate(`${configs.routes.blogEditWith}${id}`);
   };
 
   const handleAddNew = () => {
@@ -118,11 +118,13 @@ const BlogManagement = () => {
                 <TableRow key={blog.id}>
                   <TableCell>{blog.id}</TableCell>
                   <TableCell>
-                    <img
-                      src={blog.avatar.imageUrl}
-                      alt={blog.avatar.description}
-                      style={{ width: "100px", height: "auto" }}
-                    />
+                    {blog.avatar && (
+                      <img
+                        src={blog.avatar.imageUrl}
+                        alt={blog.avatar.description}
+                        style={{ width: "100px", height: "auto" }}
+                      />
+                    )}
                   </TableCell>
                   <TableCell>{blog.title}</TableCell>
                   <TableCell>{blog.shortDescription}</TableCell>

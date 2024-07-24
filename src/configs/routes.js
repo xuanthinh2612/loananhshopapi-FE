@@ -2,12 +2,6 @@ const routes = {
   adminDashboard: "/adminDashboard",
   home: "/",
   productDetail: "/product-detail/:id",
-  studentList: "/students",
-  classList: "/classes",
-  classDetail: "/class-detail/:id",
-  newStudent: "/new-student",
-  newClass: "/new-class",
-  editClass: "/edit-class/:id",
   login: "/login",
   registration: "/registration",
   productListMng: "/product-management",
@@ -23,6 +17,9 @@ const routes = {
   blogsManagement: "/blogs-management",
   blogs: "/blogs",
   blogDetails: "/blog/:id",
+  newBlog: "/blogs/new-blog",
+  blogEditWith: "/blogs/edit/",
+  editBlog: "/blogs/edit/:id",
 };
 
 export default routes;

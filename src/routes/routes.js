@@ -25,6 +25,8 @@ import EditCategoryPage from "components/admin/EditCategoryPage/EditCategoryPage
 import BlogManagement from "components/admin/BlogManagement/BlogManagement";
 import Blogs from "components/Blogs/Blogs";
 import BlogDetails from "components/BlogDetails";
+import BlogNewPage from "components/admin/BlogNewPage";
+import BlogEditPage from "components/admin/BlogEditPage";
 
 const routes = [
   {
@@ -69,6 +71,8 @@ const routes = [
     element: BlogDetails,
     notRequireAuth: true,
   },
+  { path: configs.routes.newBlog, element: BlogNewPage },
+  { path: configs.routes.editBlog, element: BlogEditPage },
 ];
 
 export default routes;

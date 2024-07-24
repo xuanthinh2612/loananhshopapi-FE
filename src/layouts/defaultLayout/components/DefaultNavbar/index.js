@@ -297,6 +297,12 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
         <MDBox color="white" mx={2}>
           Đồ cũ
         </MDBox>
+        <MDBox color="white" mx={2}>
+          Hỏi đáp
+        </MDBox>{" "}
+        <MDBox color="white" mx={2}>
+          Oder hộ
+        </MDBox>
       </MDBox>
     </>
   );
