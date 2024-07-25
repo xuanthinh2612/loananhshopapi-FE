@@ -98,7 +98,7 @@ function AdminLayout({ children }) {
       <Configurator />
       {configsButton}
       <DashboardLayout>
-        {/* <DashboardNavbar /> */}
+        <DashboardNavbar />
         <MDBox py={3}>{children}</MDBox>
         <Footer />
       </DashboardLayout>

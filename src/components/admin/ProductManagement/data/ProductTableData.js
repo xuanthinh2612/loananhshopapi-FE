@@ -132,7 +132,10 @@ function ProductTableData({ productList, callback }) {
 
         return {
           product: (
-            <Link target="_blank" to={`/product-detail/${product.id}`}>
+            <Link
+              target="_blank"
+              to={`${configs.routes.productDetailWith}${product.id}`}
+            >
               <Product image={product.avatar.imageUrl} name={product.name} />
             </Link>
           ),

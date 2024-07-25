@@ -71,7 +71,7 @@ const Blogs = () => {
                 <MDButton
                   sx={{ m: "5px" }}
                   component={Link}
-                  to={`/blog/${mainBlog.id}`}
+                  to={`/blogs/${mainBlog.id}`}
                   variant="contained"
                   color="info"
                 >
@@ -88,7 +88,7 @@ const Blogs = () => {
           {blogList &&
             blogList.map((blog) => (
               <Grid mb={3} item key={blog.id} xs={12} sm={6} md={6} lg={4}>
-                <Link to={`/blog/${blog.id}`}>
+                <Link to={`/blogs/${blog.id}`}>
                   <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>
                     <CardMedia
                       component="img"

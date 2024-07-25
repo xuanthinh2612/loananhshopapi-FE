@@ -126,6 +126,7 @@ function App() {
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       <Routes>
+        <Route path="/" element={<Navigate to={configs.routes.home} />} />
         {routes.map((route, index) => {
           const Page = route.element;
           return (

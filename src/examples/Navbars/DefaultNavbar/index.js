@@ -24,6 +24,7 @@ import breakpoints from "assets/theme/base/breakpoints";
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
+import configs from "configs";
 
 function DefaultNavbar({ transparent, light, action }) {
   const [controller] = useMaterialUIController();
@@ -90,7 +91,7 @@ function DefaultNavbar({ transparent, light, action }) {
       >
         <MDBox
           component={Link}
-          to="/"
+          to={configs.routes.home}
           py={transparent ? 1.5 : 0.75}
           lineHeight={1}
           pl={{ xs: 0, lg: 1 }}
@@ -107,7 +108,7 @@ function DefaultNavbar({ transparent, light, action }) {
           <DefaultNavbarLink
             icon="donut_large"
             name="Trang Chủ"
-            route="/"
+            route={configs.routes.home}
             light={light}
           />
           <DefaultNavbarLink

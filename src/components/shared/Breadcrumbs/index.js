@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -28,7 +13,7 @@ import MDBox from "components/shared/MDBox";
 import MDTypography from "components/shared/MDTypography";
 import configs from "configs";
 
-function Breadcrumbs({ icon, title, route, light }) {
+function Breadcrumbs({ icon, title, route, light = false }) {
   const routes = route.slice(0, -1);
 
   return (
@@ -74,26 +59,12 @@ function Breadcrumbs({ icon, title, route, light }) {
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
-          {title.replace("-", " ")}
+          {isNaN(title) && title.replace("-", " ")}
         </MDTypography>
       </MuiBreadcrumbs>
-      <MDTypography
-        fontWeight="bold"
-        textTransform="capitalize"
-        variant="h6"
-        color={light ? "white" : "dark"}
-        noWrap
-      >
-        {title.replace("-", " ")}
-      </MDTypography>
     </MDBox>
   );
 }
-
-// Setting default values for the props of Breadcrumbs
-Breadcrumbs.defaultProps = {
-  light: false,
-};
 
 // Typechecking props for the Breadcrumbs
 Breadcrumbs.propTypes = {

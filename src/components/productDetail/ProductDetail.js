@@ -321,7 +321,7 @@ function ProductDetail(props) {
               {store.getState().productReducer.list.map((product, index) => (
                 <Grid item xs={6} sm={6} md={4} lg={4} xl={3} key={index}>
                   <Link
-                    to={`/product-detail/${product.id}`}
+                    to={`${configs.routes.productDetailWith}${product.id}`}
                     style={{ textDecoration: "none" }}
                   >
                     <Card sx={{ p: 0, m: 0, borderRadius: 0 }}>

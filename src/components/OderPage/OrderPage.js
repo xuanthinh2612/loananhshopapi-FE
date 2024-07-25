@@ -39,6 +39,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import configs from "configs";
 
 function OrderPage() {
   const navigate = useNavigate();
@@ -236,7 +237,7 @@ function OrderPage() {
 
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
+    navigate(configs.routes.home);
   };
 
   const handleOpen = () => {
@@ -274,7 +275,11 @@ function OrderPage() {
           </Typography>
           <Typography variant="h5" gutterBottom>
             Vui lòng quay lại trang chủ&nbsp;
-            <Link to="/" style={{ textDecoration: "none" }} color="text">
+            <Link
+              to={configs.routes.home}
+              style={{ textDecoration: "none" }}
+              color="text"
+            >
               loananhshop.com
             </Link>
           </Typography>

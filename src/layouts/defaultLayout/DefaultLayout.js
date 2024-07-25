@@ -1,5 +1,3 @@
-import Navbar from "./components/Navbar";
-import AdminNavbar from "./components/AdminNavbar";
 import DefaultNavbar from "layouts/defaultLayout/components/DefaultNavbar";
 import MDBox from "components/shared/MDBox";
 import DashboardLayout from "./components/DashboardLayout";
@@ -10,7 +8,6 @@ function DefaultLayout({ children }) {
     <>
       <DefaultNavbar />
       <DashboardLayout>
-        <MDBox mb={2} />
         {children}
         <Footer />
       </DashboardLayout>

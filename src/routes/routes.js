@@ -42,6 +42,7 @@ const routes = [
   { path: configs.routes.productListMng, element: ProductManagement },
   { path: configs.routes.adminDashboard, element: Dashboard },
   { path: configs.routes.home, element: Home, notRequireAuth: true },
+  { path: configs.routes.products, element: Home, notRequireAuth: true },
   { path: configs.routes.studentList, element: StudentList },
   { path: configs.routes.classList, element: ClassList },
   { path: configs.routes.classDetail, element: ClassDetailForm },

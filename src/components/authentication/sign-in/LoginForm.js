@@ -66,7 +66,7 @@ function LoginForm() {
     // Initialize FirebaseUI
     const uiConfig = {
       signInFlow: "popup",
-      signInSuccessUrl: "/", // URL to redirect to after sign-in.
+      signInSuccessUrl: configs.routes.home, // URL to redirect to after sign-in.
       signInOptions: [
         // List of authentication providers.
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,

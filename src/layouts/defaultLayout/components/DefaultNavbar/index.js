@@ -28,10 +28,10 @@ import { useMaterialUIController, setTransparentNavbar } from "context";
 
 //======================custom import=========
 import { home } from "assets/icons";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import configs from "configs";
-import { Badge, Box } from "@mui/material";
+import { Badge, Box, Container } from "@mui/material";
 //=====================ADD-MORE================
 import {
   cleanUpSessionAndStorageData,
@@ -41,11 +41,13 @@ import {
 import MDButton from "components/shared/MDButton";
 import MDTypography from "components/shared/MDTypography";
 import { isAdminUser } from "service/authService";
+import Breadcrumbs from "components/shared/Breadcrumbs";
 
 function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
   const navigate = useNavigate();
   const isSignedIn = isUserLoggedIn();
   const isAdmin = isAdminUser();
+  const route = useLocation().pathname.split("/").slice(1);
 
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -284,7 +286,7 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
           mx={2}
           component="a"
           aria-current="page"
-          href="/blogs"
+          href={configs.routes.blogs}
         >
           Thực phẩm chức năng
         </MDBox>
@@ -304,6 +306,16 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
           Oder hộ
         </MDBox>
       </MDBox>
+      <Container>
+        <MDBox display="flex" mt={2} mx={2}>
+          <Breadcrumbs
+            icon="home"
+            title={route[route.length - 1]}
+            route={route}
+            light={light}
+          />
+        </MDBox>
+      </Container>
     </>
   );
 }

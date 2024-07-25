@@ -86,7 +86,7 @@ function Footer({ company, links }) {
 Footer.defaultProps = {
   company: { href: configs.routes.home, name: "loananhshop.com" },
   links: [
-    { href: "/", name: "loananhshop.com" },
+    { href: "/home", name: "loananhshop.com" },
     { href: "/about", name: "Về chúng tôi" },
     { href: "/blog", name: "Blog" },
     { href: "/license", name: "Điều khoản sử dụng" },
