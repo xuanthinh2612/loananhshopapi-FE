@@ -197,9 +197,6 @@ function DefaultNavbar({ absolute = false, light = false, isMini = false }) {
           </MDBox>
           {isMini ? null : (
             <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-              <MDBox pr={1} mx={0} size="small">
-                <MDInput label="Tìm kiếm" />
-              </MDBox>
               {isSignedIn ? (
                 <MDBox color={light ? "white" : "inherit"}>
                   <MDTypography

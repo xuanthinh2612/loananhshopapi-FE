@@ -79,7 +79,8 @@ function BlogEditPage() {
     const newSubContentList = [...blogDetails.subContentList];
 
     switch (name) {
-      case ("imageName", "imageUrl"):
+      case "imageUrl":
+      case "imageName":
         newSubContentList[index]["image"][name] = value;
         break;
       case "imageDescription":
@@ -371,7 +372,7 @@ function BlogEditPage() {
                               <TextField
                                 label="Tên Ảnh"
                                 name="imageName"
-                                value={subContent.image.name}
+                                value={subContent.image.imageName}
                                 onChange={(e) =>
                                   handleSubContentChange(index, e)
                                 }
